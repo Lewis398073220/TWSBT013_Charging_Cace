@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDK_Workspace Name="APT32F102_Release_V1_00" Database="">
+  <Project Name="102bootloader" Path="../../bootloader/102bootloader.cdkproj" Active="Yes"/>
+  <Project Name="apt32f102" Path="../../app_test/apt32f102.cdkproj" Active="No"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Environment/>
+      <Project Name="102bootloader" ConfigName="BuildSet"/>
+      <Project Name="apt32f102" ConfigName="BuildSet"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CDK_Workspace>

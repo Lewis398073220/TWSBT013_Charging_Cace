@@ -1,0 +1,831 @@
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           CSKY
+  Version:                           0x1
+  Entry point address:               0x108
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          130240 (bytes into file)
+  Flags:                             0x21000000
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         2
+  Size of section headers:           40 (bytes)
+  Number of section headers:         81
+  Section header string table index: 78
+
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .text             PROGBITS        00000000 001000 0002f4 00  AX  0   0 1024
+  [ 2] .text.__main      PROGBITS        000002f4 0012f4 000038 00  AX  0   0  4
+  [ 3] .text.SYSCON_Gene PROGBITS        0000032c 00132c 000078 00  AX  0   0  4
+  [ 4] .text.SYSCON_RST_ PROGBITS        000003a4 0013a4 000058 00  AX  0   0  4
+  [ 5] .text.SYSCON_Gene PROGBITS        000003fc 0013fc 000030 00  AX  0   0  4
+  [ 6] .text.SystemCLK_H PROGBITS        0000042c 00142c 00007c 00  AX  0   0  4
+  [ 7] .text.SYSCON_HFOS PROGBITS        000004a8 0014a8 000028 00  AX  0   0  4
+  [ 8] .text.SYSCON_WDT_ PROGBITS        000004d0 0014d0 00003c 00  AX  0   0  4
+  [ 9] .text.SYSCON_IWDC PROGBITS        0000050c 00150c 000014 00  AX  0   0  4
+  [10] .text.SYSCON_IWDC PROGBITS        00000520 001520 000018 00  AX  0   0  4
+  [11] .text.SYSCON_Soft PROGBITS        00000538 001538 000014 00  AX  0   0  4
+  [12] .text.UART1_DeIni PROGBITS        0000054c 00154c 000018 00  AX  0   0  4
+  [13] .text.UART1_Int_E PROGBITS        00000564 001564 00001c 00  AX  0   0  4
+  [14] .text.UARTInitRxT PROGBITS        00000580 001580 000010 00  AX  0   0  2
+  [15] .text.UARTTxByte  PROGBITS        00000590 001590 00000e 00  AX  0   0  2
+  [16] .text.check_patte PROGBITS        000005a0 0015a0 00005c 00  AX  0   0  4
+  [17] .text.ProgUartPag PROGBITS        000005fc 0015fc 0000a0 00  AX  0   0  4
+  [18] .text.SendBackStr PROGBITS        0000069c 00169c 000038 00  AX  0   0  4
+  [19] .text.ErrMsgSend  PROGBITS        000006d4 0016d4 0000a0 00  AX  0   0  4
+  [20] .text.check_progr PROGBITS        00000774 001774 000030 00  AX  0   0  4
+  [21] .text.check_progr PROGBITS        000007a4 0017a4 000020 00  AX  0   0  4
+  [22] .text.clear_rec_b PROGBITS        000007c4 0017c4 000030 00  AX  0   0  4
+  [23] .text.program_fla PROGBITS        000007f4 0017f4 000094 00  AX  0   0  4
+  [24] .text.JumptoAPP   PROGBITS        00000888 001888 000014 00  AX  0   0  4
+  [25] .text.check_jumpA PROGBITS        0000089c 00189c 000024 00  AX  0   0  4
+  [26] .text.check_boot_ PROGBITS        000008c0 0018c0 00008c 00  AX  0   0  4
+  [27] .text.controlword PROGBITS        0000094c 00194c 00004c 00  AX  0   0  4
+  [28] .text.cal_image_c PROGBITS        00000998 001998 000034 00  AX  0   0  4
+  [29] .text.verify_last PROGBITS        000009cc 0019cc 000030 00  AX  0   0  4
+  [30] .text.boot_proces PROGBITS        000009fc 0019fc 000050 00  AX  0   0  4
+  [31] .text.program_pro PROGBITS        00000a4c 001a4c 000120 00  AX  0   0  4
+  [32] .text.rst_mcu     PROGBITS        00000b6c 001b6c 000010 00  AX  0   0  2
+  [33] .text.wait_cmd    PROGBITS        00000b7c 001b7c 000054 00  AX  0   0  4
+  [34] .text.Flash_Read_ PROGBITS        00000bd0 001bd0 000004 00  AX  0   0  2
+  [35] .text.flashErase  PROGBITS        00000bd4 001bd4 00002e 00  AX  0   0  2
+  [36] .text.delayus_Byc PROGBITS        00000c02 001c02 00002a 00  AX  0   0  2
+  [37] .text.delayms_Byc PROGBITS        00000c2c 001c2c 00001e 00  AX  0   0  2
+  [38] .text.PageErase   PROGBITS        00000c4c 001c4c 000024 00  AX  0   0  4
+  [39] .text.Page_Progra PROGBITS        00000c70 001c70 0000a0 00  AX  0   0  4
+  [40] .text.ReadDataOne PROGBITS        00000d10 001d10 000016 00  AX  0   0  2
+  [41] .text.IFC_interru PROGBITS        00000d28 001d28 00001c 00  AX  0   0  4
+  [42] .text.GPIO_Read_S PROGBITS        00000d44 001d44 000010 00  AX  0   0  2
+  [43] .text.UART1_CONFI PROGBITS        00000d54 001d54 00004c 00  AX  0   0  4
+  [44] .text.IFC_CONFIG  PROGBITS        00000da0 001da0 000030 00  AX  0   0  4
+  [45] .text.SYSCON_CONF PROGBITS        00000dd0 001dd0 000038 00  AX  0   0  2
+  [46] .text.APT32F102_i PROGBITS        00000e08 001e08 000030 00  AX  0   0  4
+  [47] .text.UART0IntHan PROGBITS        00000e38 001e38 00001c 00  AX  0   0  4
+  [48] .text.UART1IntHan PROGBITS        00000e54 001e54 000030 00  AX  0   0  4
+  [49] .text.PriviledgeV PROGBITS        00000e84 001e84 000002 00  AX  0   0  2
+  [50] .text.PendTrapHan PROGBITS        00000e86 001e86 000008 00  AX  0   0  2
+  [51] .text.Trap3Handle PROGBITS        00000e8e 001e8e 000008 00  AX  0   0  2
+  [52] .text.Trap2Handle PROGBITS        00000e96 001e96 000008 00  AX  0   0  2
+  [53] .text.Trap1Handle PROGBITS        00000e9e 001e9e 000008 00  AX  0   0  2
+  [54] .text.Trap0Handle PROGBITS        00000ea6 001ea6 000008 00  AX  0   0  2
+  [55] .text.UnrecExecpH PROGBITS        00000eae 001eae 000008 00  AX  0   0  2
+  [56] .text.BreakPointH PROGBITS        00000eb6 001eb6 000008 00  AX  0   0  2
+  [57] .text.AccessErrHa PROGBITS        00000ebe 001ebe 000008 00  AX  0   0  2
+  [58] .text.IllegalInst PROGBITS        00000ec6 001ec6 000008 00  AX  0   0  2
+  [59] .text.MisalignedH PROGBITS        00000ece 001ece 000008 00  AX  0   0  2
+  [60] .text.UART2IntHan PROGBITS        00000ed6 001ed6 000008 00  AX  0   0  2
+  [61] .text.IFCIntHandl PROGBITS        00000ede 001ede 000008 00  AX  0   0  2
+  [62] .text.startup.mai PROGBITS        00000ee8 001ee8 000068 00  AX  0   0  4
+  [63] .RomCode          PROGBITS        00000f50 002074 000000 00   W  0   0  1
+  [64] .rodata           PROGBITS        00000f50 001f50 000048 00   A  0   0  1
+  [65] .data             PROGBITS        20000000 002000 000074 00  WA  0   0  4
+  [66] .bss              NOBITS          20000074 002074 000150 00  WA  0   0  4
+  [67] .csky.attributes  CSKY_ATTRIBUTES 00000000 002074 000020 00      0   0  1
+  [68] .comment          PROGBITS        00000000 002094 00003b 01  MS  0   0  1
+  [69] .csky_stack_size  PROGBITS        00000000 0020d0 0001cc 00      0   0 16
+  [70] .debug_line       PROGBITS        00000000 00229c 0017f4 00      0   0  1
+  [71] .debug_info       PROGBITS        00000000 003a90 0139a8 00      0   0  1
+  [72] .debug_abbrev     PROGBITS        00000000 017438 0013a1 00      0   0  1
+  [73] .debug_aranges    PROGBITS        00000000 0187e0 0004c8 00      0   0  8
+  [74] .debug_ranges     PROGBITS        00000000 018ca8 0003f8 00      0   0  1
+  [75] .debug_str        PROGBITS        00000000 0190a0 003416 01  MS  0   0  1
+  [76] .debug_frame      PROGBITS        00000000 01c4b8 000a74 00      0   0  4
+  [77] .debug_loc        PROGBITS        00000000 01cf2c 000740 00      0   0  1
+  [78] .shstrtab         STRTAB          00000000 01f6b3 00060d 00      0   0  1
+  [79] .symtab           SYMTAB          00000000 01d66c 0018c0 10     80 269  4
+  [80] .strtab           STRTAB          00000000 01ef2c 000787 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  p (processor specific)
+
+Program Headers:
+  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+  LOAD           0x001000 0x00000000 0x00000000 0x00f98 0x00f98 R E 0x1000
+  LOAD           0x002000 0x20000000 0x00000f98 0x00074 0x001c4 RW  0x1000
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .text .text.__main .text.SYSCON_General_CMD.part.0 .text.SYSCON_RST_VALUE .text.SYSCON_General_CMD .text.SystemCLK_HCLKDIV_PCLKDIV_Config .text.SYSCON_HFOSC_SELECTE .text.SYSCON_WDT_CMD .text.SYSCON_IWDCNT_Reload .text.SYSCON_IWDCNT_Config .text.SYSCON_Software_Reset .text.UART1_DeInit .text.UART1_Int_Enable .text.UARTInitRxTxIntEn .text.UARTTxByte .text.check_pattern_code .text.ProgUartPageRec .text.SendBackStr .text.ErrMsgSend .text.check_program_start .text.check_program_end .text.clear_rec_buffer .text.program_flash .text.JumptoAPP .text.check_jumpAddr .text.check_boot_option .text.controlword_receiving .text.cal_image_checknum .text.verify_lastProg .text.boot_process .text.program_process .text.rst_mcu .text.wait_cmd .text.Flash_Read_Word .text.flashErase .text.delayus_Bycode .text.delayms_Bycode .text.PageErase .text.Page_ProgramData .text.ReadDataOneWord .text.IFC_interrupt_CMD .text.GPIO_Read_Status .text.UART1_CONFIG .text.IFC_CONFIG .text.SYSCON_CONFIG .text.APT32F102_init .text.UART0IntHandler .text.UART1IntHandler .text.PriviledgeVioHandler .text.PendTrapHandler .text.Trap3Handler .text.Trap2Handler .text.Trap1Handler .text.Trap0Handler .text.UnrecExecpHandler .text.BreakPointHandler .text.AccessErrHandler .text.IllegalInstrHandler .text.MisalignedHandler .text.UART2IntHandler .text.IFCIntHandler .text.startup.main .rodata 
+   01     .data .bss 
+======================================================================
+Csky GNU Linker
+
+======================================================================
+
+Section Cross References
+
+	Obj/apt32f102_initial.o(.text.SYSCON_CONFIG) refers to Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_RST_VALUE) for SYSCON_RST_VALUE
+	Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_HFOSC_SELECTE) refers to Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_General_CMD) for SYSCON_General_CMD
+	Obj/apt32f102_initial.o(.text.SYSCON_CONFIG) refers to Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_General_CMD) for SYSCON_General_CMD
+	Obj/apt32f102_initial.o(.text.SYSCON_CONFIG) refers to Obj/FWlib_apt32f102_syscon.o(.text.SystemCLK_HCLKDIV_PCLKDIV_Config) for SystemCLK_HCLKDIV_PCLKDIV_Config
+	Obj/apt32f102_initial.o(.text.SYSCON_CONFIG) refers to Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_HFOSC_SELECTE) for SYSCON_HFOSC_SELECTE
+	Obj/apt32f102_initial.o(.text.SYSCON_CONFIG) refers to Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_WDT_CMD) for SYSCON_WDT_CMD
+	Obj/FWlib_btloaderPub.o(.text.program_flash) refers to Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_IWDCNT_Reload) for SYSCON_IWDCNT_Reload
+	Obj/FWlib_btloaderPub.o(.text.check_boot_option) refers to Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_IWDCNT_Reload) for SYSCON_IWDCNT_Reload
+	Obj/FWlib_btloaderPub.o(.text.cal_image_checknum) refers to Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_IWDCNT_Reload) for SYSCON_IWDCNT_Reload
+	Obj/FWlib_btloaderPub.o(.text.program_process) refers to Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_IWDCNT_Reload) for SYSCON_IWDCNT_Reload
+	Obj/FWlib_btloaderPub.o(.text.wait_cmd) refers to Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_IWDCNT_Reload) for SYSCON_IWDCNT_Reload
+	Obj/apt32f102_initial.o(.text.SYSCON_CONFIG) refers to Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_IWDCNT_Reload) for SYSCON_IWDCNT_Reload
+	Obj/main.o(.text.startup.main) refers to Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_IWDCNT_Reload) for SYSCON_IWDCNT_Reload
+	Obj/apt32f102_initial.o(.text.SYSCON_CONFIG) refers to Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_IWDCNT_Config) for SYSCON_IWDCNT_Config
+	Obj/FWlib_btloaderPub.o(.text.rst_mcu) refers to Obj/FWlib_apt32f102_syscon.o(.text.SYSCON_Software_Reset) for SYSCON_Software_Reset
+	Obj/apt32f102_initial.o(.text.UART1_CONFIG) refers to Obj/FWlib_apt32f102_uart.o(.text.UART1_DeInit) for UART1_DeInit
+	Obj/apt32f102_initial.o(.text.UART1_CONFIG) refers to Obj/FWlib_apt32f102_uart.o(.text.UART1_Int_Enable) for UART1_Int_Enable
+	Obj/apt32f102_initial.o(.text.UART1_CONFIG) refers to Obj/FWlib_apt32f102_uart.o(.text.UARTInitRxTxIntEn) for UARTInitRxTxIntEn
+	Obj/FWlib_btloaderPub.o(.text.SendBackStr) refers to Obj/FWlib_apt32f102_uart.o(.text.UARTTxByte) for UARTTxByte
+	Obj/FWlib_btloaderPub.o(.text.ErrMsgSend) refers to Obj/FWlib_apt32f102_uart.o(.text.UARTTxByte) for UARTTxByte
+	Obj/FWlib_btloaderPub.o(.text.ProgUartPageRec) refers to Obj/FWlib_btloaderPub.o(.text.check_pattern_code) for check_pattern_code
+	Obj/apt32f102_interrupt.o(.text.UART1IntHandler) refers to Obj/FWlib_btloaderPub.o(.text.ProgUartPageRec) for ProgUartPageRec
+	Obj/FWlib_btloaderPub.o(.text.ErrMsgSend) refers to Obj/FWlib_btloaderPub.o(.text.SendBackStr) for SendBackStr
+	Obj/FWlib_btloaderPub.o(.text.check_boot_option) refers to Obj/FWlib_btloaderPub.o(.text.ErrMsgSend) for ErrMsgSend
+	Obj/FWlib_btloaderPub.o(.text.boot_process) refers to Obj/FWlib_btloaderPub.o(.text.ErrMsgSend) for ErrMsgSend
+	Obj/FWlib_btloaderPub.o(.text.program_process) refers to Obj/FWlib_btloaderPub.o(.text.ErrMsgSend) for ErrMsgSend
+	Obj/FWlib_btloaderPub.o(.text.wait_cmd) refers to Obj/FWlib_btloaderPub.o(.text.ErrMsgSend) for ErrMsgSend
+	Obj/FWlib_btloaderPub.o(.text.check_boot_option) refers to Obj/FWlib_btloaderPub.o(.text.check_program_start) for check_program_start
+	Obj/FWlib_btloaderPub.o(.text.program_flash) refers to Obj/FWlib_btloaderPub.o(.text.check_program_end) for check_program_end
+	Obj/FWlib_btloaderPub.o(.text.check_boot_option) refers to Obj/FWlib_btloaderPub.o(.text.clear_rec_buffer) for clear_rec_buffer
+	Obj/FWlib_btloaderPub.o(.text.boot_process) refers to Obj/FWlib_btloaderPub.o(.text.clear_rec_buffer) for clear_rec_buffer
+	Obj/FWlib_btloaderPub.o(.text.program_process) refers to Obj/FWlib_btloaderPub.o(.text.clear_rec_buffer) for clear_rec_buffer
+	Obj/FWlib_btloaderPub.o(.text.wait_cmd) refers to Obj/FWlib_btloaderPub.o(.text.clear_rec_buffer) for clear_rec_buffer
+	Obj/FWlib_btloaderPub.o(.text.program_process) refers to Obj/FWlib_btloaderPub.o(.text.program_flash) for program_flash
+	Obj/FWlib_btloaderPub.o(.text.boot_process) refers to Obj/FWlib_btloaderPub.o(.text.JumptoAPP) for JumptoAPP
+	Obj/FWlib_btloaderPub.o(.text.boot_process) refers to Obj/FWlib_btloaderPub.o(.text.check_jumpAddr) for check_jumpAddr
+	Obj/main.o(.text.startup.main) refers to Obj/FWlib_btloaderPub.o(.text.check_boot_option) for check_boot_option
+	Obj/FWlib_btloaderPub.o(.text.program_process) refers to Obj/FWlib_btloaderPub.o(.text.controlword_receiving) for controlword_receiving
+	Obj/FWlib_btloaderPub.o(.text.verify_lastProg) refers to Obj/FWlib_btloaderPub.o(.text.cal_image_checknum) for cal_image_checknum
+	Obj/FWlib_btloaderPub.o(.text.program_process) refers to Obj/FWlib_btloaderPub.o(.text.verify_lastProg) for verify_lastProg
+	Obj/main.o(.text.startup.main) refers to Obj/FWlib_btloaderPub.o(.text.boot_process) for boot_process
+	Obj/main.o(.text.startup.main) refers to Obj/FWlib_btloaderPub.o(.text.program_process) for program_process
+	Obj/FWlib_btloaderPub.o(.text.wait_cmd) refers to Obj/FWlib_btloaderPub.o(.text.rst_mcu) for rst_mcu
+	Obj/main.o(.text.startup.main) refers to Obj/FWlib_btloaderPub.o(.text.rst_mcu) for rst_mcu
+	Obj/main.o(.text.startup.main) refers to Obj/FWlib_btloaderPub.o(.text.wait_cmd) for wait_cmd
+	Obj/FWlib_btloaderPub.o(.text.cal_image_checknum) refers to Obj/FWlib_btloaderDriver.o(.text.Flash_Read_Word) for Flash_Read_Word
+	Obj/FWlib_btloaderPub.o(.text.verify_lastProg) refers to Obj/FWlib_btloaderDriver.o(.text.flashErase) for flashErase
+	Obj/FWlib_btloaderPub.o(.text.program_process) refers to Obj/FWlib_btloaderDriver.o(.text.flashErase) for flashErase
+	Obj/FWlib_btloaderPub.o(.text.boot_process) refers to Obj/FWlib_apt32f102_delay.o(.text.delayus_Bycode) for delayus_Bycode
+	Obj/FWlib_btloaderPub.o(.text.program_process) refers to Obj/FWlib_apt32f102_delay.o(.text.delayus_Bycode) for delayus_Bycode
+	Obj/FWlib_btloaderPub.o(.text.rst_mcu) refers to Obj/FWlib_apt32f102_delay.o(.text.delayus_Bycode) for delayus_Bycode
+	Obj/FWlib_apt32f102_delay.o(.text.delayms_Bycode) refers to Obj/FWlib_apt32f102_delay.o(.text.delayus_Bycode) for delayus_Bycode
+	Obj/FWlib_btloaderPub.o(.text.ErrMsgSend) refers to Obj/FWlib_apt32f102_delay.o(.text.delayms_Bycode) for delayms_Bycode
+	Obj/FWlib_btloaderPub.o(.text.check_program_start) refers to Obj/FWlib_apt32f102_delay.o(.text.delayms_Bycode) for delayms_Bycode
+	Obj/FWlib_btloaderPub.o(.text.program_flash) refers to Obj/FWlib_apt32f102_delay.o(.text.delayms_Bycode) for delayms_Bycode
+	Obj/FWlib_btloaderPub.o(.text.check_boot_option) refers to Obj/FWlib_apt32f102_delay.o(.text.delayms_Bycode) for delayms_Bycode
+	Obj/FWlib_btloaderPub.o(.text.controlword_receiving) refers to Obj/FWlib_apt32f102_delay.o(.text.delayms_Bycode) for delayms_Bycode
+	Obj/FWlib_btloaderPub.o(.text.boot_process) refers to Obj/FWlib_apt32f102_delay.o(.text.delayms_Bycode) for delayms_Bycode
+	Obj/FWlib_btloaderPub.o(.text.program_process) refers to Obj/FWlib_apt32f102_delay.o(.text.delayms_Bycode) for delayms_Bycode
+	Obj/FWlib_btloaderPub.o(.text.wait_cmd) refers to Obj/FWlib_apt32f102_delay.o(.text.delayms_Bycode) for delayms_Bycode
+	Obj/FWlib_btloaderDriver.o(.text.flashErase) refers to Obj/FWlib_apt32f102_ifc.o(.text.PageErase) for PageErase
+	Obj/FWlib_btloaderPub.o(.text.program_flash) refers to Obj/FWlib_apt32f102_ifc.o(.text.Page_ProgramData) for Page_ProgramData
+	Obj/FWlib_btloaderPub.o(.text.check_jumpAddr) refers to Obj/FWlib_apt32f102_ifc.o(.text.ReadDataOneWord) for ReadDataOneWord
+	Obj/apt32f102_initial.o(.text.IFC_CONFIG) refers to Obj/FWlib_apt32f102_ifc.o(.text.IFC_interrupt_CMD) for IFC_interrupt_CMD
+	Obj/FWlib_btloaderPub.o(.text.check_boot_option) refers to Obj/FWlib_apt32f102_gpio.o(.text.GPIO_Read_Status) for GPIO_Read_Status
+	Obj/FWlib_btloaderPub.o(.text.check_boot_option) refers to Obj/apt32f102_initial.o(.text.UART1_CONFIG) for UART1_CONFIG
+	Obj/apt32f102_initial.o(.text.APT32F102_init) refers to Obj/apt32f102_initial.o(.text.UART1_CONFIG) for UART1_CONFIG
+	Obj/apt32f102_initial.o(.text.APT32F102_init) refers to Obj/apt32f102_initial.o(.text.IFC_CONFIG) for IFC_CONFIG
+	Obj/apt32f102_initial.o(.text.APT32F102_init) refers to Obj/apt32f102_initial.o(.text.SYSCON_CONFIG) for SYSCON_CONFIG
+	Obj/main.o(.text.startup.main) refers to Obj/apt32f102_initial.o(.text.APT32F102_init) for APT32F102_init
+	Obj/FWlib_btloaderPub.o(.text.wait_cmd) refers to _modsi3.o(.text) for __modsi3
+	Obj/arch_mem_init.o(.text.__main) refers to memset_fast.o(.text) for memset
+	Obj/arch_mem_init.o(.text.__main) refers to memcpy_fast.o(.text) for memcpy
+	Obj/FWlib_btloaderPub.o(.text.ErrMsgSend) refers to memcpy_fast.o(.text) for memcpy
+
+
+======================================================================
+
+Removing Unused input sections from the image. 
+
+	Removing .data(Obj/arch_crt0.o), (4 bytes).
+	Removing .bss(Obj/arch_crt0.o), (0 bytes).
+	Removing .text(Obj/arch_mem_init.o), (0 bytes).
+	Removing .data(Obj/arch_mem_init.o), (0 bytes).
+	Removing .bss(Obj/arch_mem_init.o), (0 bytes).
+	Removing .text(Obj/FWlib_apt32f102_syscon.o), (0 bytes).
+	Removing .data(Obj/FWlib_apt32f102_syscon.o), (0 bytes).
+	Removing .bss(Obj/FWlib_apt32f102_syscon.o), (0 bytes).
+	Removing .text.EMOSC_OSTR_Config(Obj/FWlib_apt32f102_syscon.o), (28 bytes).
+	Removing .text.SYSCON_IMOSC_SELECTE(Obj/FWlib_apt32f102_syscon.o), (40 bytes).
+	Removing .text.SYSCON_LVD_Config(Obj/FWlib_apt32f102_syscon.o), (32 bytes).
+	Removing .text.LVD_Int_Enable(Obj/FWlib_apt32f102_syscon.o), (28 bytes).
+	Removing .text.LVD_Int_Disable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.IWDT_Int_Enable(Obj/FWlib_apt32f102_syscon.o), (28 bytes).
+	Removing .text.IWDT_Int_Disable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.Read_Reset_Status(Obj/FWlib_apt32f102_syscon.o), (24 bytes).
+	Removing .text.EXTI_trigger_CMD(Obj/FWlib_apt32f102_syscon.o), (64 bytes).
+	Removing .text.EXTI_interrupt_CMD(Obj/FWlib_apt32f102_syscon.o), (52 bytes).
+	Removing .text.GPIO_EXTI_interrupt(Obj/FWlib_apt32f102_syscon.o), (4 bytes).
+	Removing .text.PCLK_goto_idle_mode(Obj/FWlib_apt32f102_syscon.o), (6 bytes).
+	Removing .text.PCLK_goto_deepsleep_mode(Obj/FWlib_apt32f102_syscon.o), (20 bytes).
+	Removing .text.EXI0_Int_Enable(Obj/FWlib_apt32f102_syscon.o), (12 bytes).
+	Removing .text.EXI0_Int_Disable(Obj/FWlib_apt32f102_syscon.o), (12 bytes).
+	Removing .text.EXI1_Int_Enable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI1_Int_Disable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI2_Int_Enable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI2_Int_Disable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI3_Int_Enable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI3_Int_Disable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI4_Int_Enable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI4_Int_Disable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI0_WakeUp_Enable(Obj/FWlib_apt32f102_syscon.o), (12 bytes).
+	Removing .text.EXI0_WakeUp_Disable(Obj/FWlib_apt32f102_syscon.o), (12 bytes).
+	Removing .text.EXI1_WakeUp_Enable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI1_WakeUp_Disable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI2_WakeUp_Enable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI2_WakeUp_Disable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI3_WakeUp_Enable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI3_WakeUp_Disable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI4_WakeUp_Enable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.EXI4_WakeUp_Disable(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.SYSCON_Int_Enable(Obj/FWlib_apt32f102_syscon.o), (12 bytes).
+	Removing .text.SYSCON_Int_Disable(Obj/FWlib_apt32f102_syscon.o), (12 bytes).
+	Removing .text.SYSCON_WakeUp_Enable(Obj/FWlib_apt32f102_syscon.o), (12 bytes).
+	Removing .text.SYSCON_CLO_CONFIG(Obj/FWlib_apt32f102_syscon.o), (52 bytes).
+	Removing .text.SYSCON_WakeUp_Disable(Obj/FWlib_apt32f102_syscon.o), (12 bytes).
+	Removing .text.SYSCON_Read_CINF0(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text.SYSCON_Read_CINF1(Obj/FWlib_apt32f102_syscon.o), (16 bytes).
+	Removing .text(Obj/FWlib_apt32f102_uart.o), (0 bytes).
+	Removing .data(Obj/FWlib_apt32f102_uart.o), (0 bytes).
+	Removing .bss(Obj/FWlib_apt32f102_uart.o), (0 bytes).
+	Removing .text.UART0_DeInit(Obj/FWlib_apt32f102_uart.o), (24 bytes).
+	Removing .text.UART2_DeInit(Obj/FWlib_apt32f102_uart.o), (24 bytes).
+	Removing .text.UART0_Int_Enable(Obj/FWlib_apt32f102_uart.o), (28 bytes).
+	Removing .text.UART0_Int_Disable(Obj/FWlib_apt32f102_uart.o), (16 bytes).
+	Removing .text.UART1_Int_Disable(Obj/FWlib_apt32f102_uart.o), (16 bytes).
+	Removing .text.UART2_Int_Enable(Obj/FWlib_apt32f102_uart.o), (28 bytes).
+	Removing .text.UART2_Int_Disable(Obj/FWlib_apt32f102_uart.o), (16 bytes).
+	Removing .text.UARTTransmit(Obj/FWlib_apt32f102_uart.o), (30 bytes).
+	Removing COMMON(Obj/FWlib_apt32f102_uart.o), (42 bytes).
+	Removing .text(Obj/FWlib_btloaderPub.o), (0 bytes).
+	Removing .text.SendBacknum(Obj/FWlib_btloaderPub.o), (48 bytes).
+	Removing .text(Obj/FWlib_btloaderDriver.o), (0 bytes).
+	Removing .data(Obj/FWlib_btloaderDriver.o), (0 bytes).
+	Removing .bss(Obj/FWlib_btloaderDriver.o), (8 bytes).
+	Removing .text(Obj/FWlib_apt32f102_delay.o), (0 bytes).
+	Removing .data(Obj/FWlib_apt32f102_delay.o), (0 bytes).
+	Removing .bss(Obj/FWlib_apt32f102_delay.o), (8 bytes).
+	Removing .text.delay360ns_Bycode(Obj/FWlib_apt32f102_delay.o), (16 bytes).
+	Removing .text.delay_ms(Obj/FWlib_apt32f102_delay.o), (28 bytes).
+	Removing .text.delay_us(Obj/FWlib_apt32f102_delay.o), (20 bytes).
+	Removing .text(Obj/FWlib_apt32f102_ifc.o), (0 bytes).
+	Removing .data(Obj/FWlib_apt32f102_ifc.o), (0 bytes).
+	Removing .bss(Obj/FWlib_apt32f102_ifc.o), (2 bytes).
+	Removing .text.ChipErase(Obj/FWlib_apt32f102_ifc.o), (36 bytes).
+	Removing .text.Page_ProgramData_int(Obj/FWlib_apt32f102_ifc.o), (156 bytes).
+	Removing .text.ReadDataArry(Obj/FWlib_apt32f102_ifc.o), (46 bytes).
+	Removing .text.IFC_Int_Enable(Obj/FWlib_apt32f102_ifc.o), (28 bytes).
+	Removing .text.IFC_Int_Disable(Obj/FWlib_apt32f102_ifc.o), (12 bytes).
+	Removing COMMON(Obj/FWlib_apt32f102_ifc.o), (5 bytes).
+	Removing .text(Obj/FWlib_apt32f102_gpio.o), (0 bytes).
+	Removing .data(Obj/FWlib_apt32f102_gpio.o), (0 bytes).
+	Removing .bss(Obj/FWlib_apt32f102_gpio.o), (0 bytes).
+	Removing .text.GPIO_DeInit(Obj/FWlib_apt32f102_gpio.o), (96 bytes).
+	Removing .text.GPIO_Write_High(Obj/FWlib_apt32f102_gpio.o), (8 bytes).
+	Removing .text.GPIO_Write_Low(Obj/FWlib_apt32f102_gpio.o), (8 bytes).
+	Removing .text(Obj/apt32f102_initial.o), (0 bytes).
+	Removing .data(Obj/apt32f102_initial.o), (0 bytes).
+	Removing .bss(Obj/apt32f102_initial.o), (0 bytes).
+	Removing .text.delay_nms(Obj/apt32f102_initial.o), (44 bytes).
+	Removing .text.delay_nus(Obj/apt32f102_initial.o), (34 bytes).
+	Removing .text.GPIO_CONFIG(Obj/apt32f102_initial.o), (36 bytes).
+	Removing .text(Obj/apt32f102_interrupt.o), (0 bytes).
+	Removing .data(Obj/apt32f102_interrupt.o), (0 bytes).
+	Removing .bss(Obj/apt32f102_interrupt.o), (0 bytes).
+	Removing .text.SystemDesPtr(Obj/apt32f102_interrupt.o), (2 bytes).
+	Removing .text(Obj/main.o), (0 bytes).
+	Removing .data(Obj/main.o), (8 bytes).
+	Removing .text(Obj/drivers_apt32f102.o), (0 bytes).
+	Removing .bss(Obj/drivers_apt32f102.o), (0 bytes).
+	Removing .text(Obj/drivers_apt32f102_ck801.o), (0 bytes).
+	Removing .data(Obj/drivers_apt32f102_ck801.o), (0 bytes).
+	Removing .bss(Obj/drivers_apt32f102_ck801.o), (0 bytes).
+	Removing .text.CK801_Init(Obj/drivers_apt32f102_ck801.o), (108 bytes).
+	Removing .text.force_interrupt(Obj/drivers_apt32f102_ck801.o), (24 bytes).
+	Removing .text.CK_CPU_EnAllNormalIrq(Obj/drivers_apt32f102_ck801.o), (6 bytes).
+	Removing .text.CK_CPU_DisAllNormalIrq(Obj/drivers_apt32f102_ck801.o), (6 bytes).
+	Removing .debug_info(Obj/drivers_apt32f102_ck801.o), (7055 bytes).
+	Removing .debug_abbrev(Obj/drivers_apt32f102_ck801.o), (366 bytes).
+	Removing .debug_aranges(Obj/drivers_apt32f102_ck801.o), (56 bytes).
+	Removing .debug_ranges(Obj/drivers_apt32f102_ck801.o), (40 bytes).
+	Removing .debug_line(Obj/drivers_apt32f102_ck801.o), (349 bytes).
+	Removing .debug_str(Obj/drivers_apt32f102_ck801.o), (3052 bytes).
+	Removing .comment(Obj/drivers_apt32f102_ck801.o), (60 bytes).
+	Removing .debug_frame(Obj/drivers_apt32f102_ck801.o), (80 bytes).
+	Removing .csky.attributes(Obj/drivers_apt32f102_ck801.o), (32 bytes).
+	Removing .text(Obj/__rt_entry.o), (240 bytes).
+	Removing .data(Obj/__rt_entry.o), (0 bytes).
+	Removing .bss(Obj/__rt_entry.o), (0 bytes).
+	Removing .debug_line(Obj/__rt_entry.o), (201 bytes).
+	Removing .debug_info(Obj/__rt_entry.o), (200 bytes).
+	Removing .debug_abbrev(Obj/__rt_entry.o), (20 bytes).
+	Removing .debug_aranges(Obj/__rt_entry.o), (32 bytes).
+	Removing .csky.attributes(Obj/__rt_entry.o), (32 bytes).
+	Removing .data(_modsi3.o), (0 bytes).
+	Removing .bss(_modsi3.o), (0 bytes).
+	Removing .data(memset_fast.o), (0 bytes).
+	Removing .bss(memset_fast.o), (0 bytes).
+	Removing .data(memcpy_fast.o), (0 bytes).
+	Removing .bss(memcpy_fast.o), (0 bytes).
+
+130 unused seciton(s) (total 13630 bytes) removed from the image.
+
+======================================================================
+
+Image Symbol Table 
+
+	Local Symbols
+
+	Symbol Name                        Value        Type   Size  Section
+	Obj/FWlib_apt32f102_delay.o        0x00000000     df        0  *ABS*
+	Obj/FWlib_apt32f102_gpio.o         0x00000000     df        0  *ABS*
+	Obj/FWlib_apt32f102_ifc.o          0x00000000     df        0  *ABS*
+	Obj/FWlib_apt32f102_syscon.o       0x00000000     df        0  *ABS*
+	Obj/FWlib_apt32f102_uart.o         0x00000000     df        0  *ABS*
+	Obj/FWlib_btloaderDriver.o         0x00000000     df        0  *ABS*
+	Obj/FWlib_btloaderPub.o            0x00000000     df        0  *ABS*
+	Obj/apt32f102_initial.o            0x00000000     df        0  *ABS*
+	Obj/apt32f102_interrupt.o          0x00000000     df        0  *ABS*
+	Obj/arch_crt0.o                    0x00000000     df        0  *ABS*
+	Obj/arch_mem_init.o                0x00000000     df        0  *ABS*
+	Obj/main.o                         0x00000000     df        0  *ABS*
+	_modsi3.o                          0x00000000     df        0  *ABS*
+	memcpy_fast.o                      0x00000000     df        0  *ABS*
+	memset_fast.o                      0x00000000     df        0  *ABS*
+	$d                                 0x00000000               0  .text
+	$t                                 0x00000108               0  .text
+	INIT_KERLE_STACK                   0x0000013a               0  .text
+	__to_main                          0x00000142               0  .text
+	__dummy                            0x0000017e               0  .text
+	$d                                 0x00000182               0  .text
+	$d                                 0x000001b0               0  .text
+	$t                                 0x000001b0               0  .text
+	$d                                 0x00000208               0  .text
+	$t                                 0x00000208               0  .text
+	$d                                 0x00000290               0  .text
+	$t                                 0x00000290               0  .text
+	$d                                 0x000002f4               0  .text.__main
+	$t                                 0x000002f4               0  .text.__main
+	$d                                 0x00000318               0  .text.__main
+	SYSCON_General_CMD.part.0          0x0000032c      F      120  .text.SYSCON_General_CMD.part.0
+	$d                                 0x0000032c               0  .text.SYSCON_General_CMD.part.0
+	$t                                 0x0000032c               0  .text.SYSCON_General_CMD.part.0
+	$d                                 0x00000398               0  .text.SYSCON_General_CMD.part.0
+	$d                                 0x000003a4               0  .text.SYSCON_RST_VALUE
+	$t                                 0x000003a4               0  .text.SYSCON_RST_VALUE
+	$d                                 0x000003e0               0  .text.SYSCON_RST_VALUE
+	$d                                 0x000003fc               0  .text.SYSCON_General_CMD
+	$t                                 0x000003fc               0  .text.SYSCON_General_CMD
+	$d                                 0x00000428               0  .text.SYSCON_General_CMD
+	$d                                 0x0000042c               0  .text.SystemCLK_HCLKDIV_PCLKDIV_Config
+	$t                                 0x0000042c               0  .text.SystemCLK_HCLKDIV_PCLKDIV_Config
+	$d                                 0x00000490               0  .text.SystemCLK_HCLKDIV_PCLKDIV_Config
+	$d                                 0x000004a8               0  .text.SYSCON_HFOSC_SELECTE
+	$t                                 0x000004a8               0  .text.SYSCON_HFOSC_SELECTE
+	$d                                 0x000004cc               0  .text.SYSCON_HFOSC_SELECTE
+	$d                                 0x000004d0               0  .text.SYSCON_WDT_CMD
+	$t                                 0x000004d0               0  .text.SYSCON_WDT_CMD
+	$d                                 0x00000500               0  .text.SYSCON_WDT_CMD
+	$d                                 0x0000050c               0  .text.SYSCON_IWDCNT_Reload
+	$t                                 0x0000050c               0  .text.SYSCON_IWDCNT_Reload
+	$d                                 0x0000051c               0  .text.SYSCON_IWDCNT_Reload
+	$d                                 0x00000520               0  .text.SYSCON_IWDCNT_Config
+	$t                                 0x00000520               0  .text.SYSCON_IWDCNT_Config
+	$d                                 0x00000530               0  .text.SYSCON_IWDCNT_Config
+	$d                                 0x00000538               0  .text.SYSCON_Software_Reset
+	$t                                 0x00000538               0  .text.SYSCON_Software_Reset
+	$d                                 0x00000544               0  .text.SYSCON_Software_Reset
+	$d                                 0x0000054c               0  .text.UART1_DeInit
+	$t                                 0x0000054c               0  .text.UART1_DeInit
+	$d                                 0x00000560               0  .text.UART1_DeInit
+	$d                                 0x00000564               0  .text.UART1_Int_Enable
+	$t                                 0x00000564               0  .text.UART1_Int_Enable
+	$d                                 0x00000578               0  .text.UART1_Int_Enable
+	$d                                 0x00000580               0  .text.UARTInitRxTxIntEn
+	$t                                 0x00000580               0  .text.UARTInitRxTxIntEn
+	$d                                 0x00000590               0  .text.UARTTxByte
+	$t                                 0x00000590               0  .text.UARTTxByte
+	$d                                 0x000005a0               0  .text.check_pattern_code
+	$t                                 0x000005a0               0  .text.check_pattern_code
+	$d                                 0x000005f8               0  .text.check_pattern_code
+	$d                                 0x000005fc               0  .text.ProgUartPageRec
+	$t                                 0x000005fc               0  .text.ProgUartPageRec
+	$d                                 0x00000688               0  .text.ProgUartPageRec
+	$d                                 0x0000069c               0  .text.SendBackStr
+	$t                                 0x0000069c               0  .text.SendBackStr
+	$d                                 0x000006d0               0  .text.SendBackStr
+	$d                                 0x000006d4               0  .text.ErrMsgSend
+	$t                                 0x000006d4               0  .text.ErrMsgSend
+	$d                                 0x00000764               0  .text.ErrMsgSend
+	$d                                 0x00000774               0  .text.check_program_start
+	$t                                 0x00000774               0  .text.check_program_start
+	$d                                 0x000007a0               0  .text.check_program_start
+	$d                                 0x000007a4               0  .text.check_program_end
+	$t                                 0x000007a4               0  .text.check_program_end
+	$d                                 0x000007c0               0  .text.check_program_end
+	$d                                 0x000007c4               0  .text.clear_rec_buffer
+	$t                                 0x000007c4               0  .text.clear_rec_buffer
+	$d                                 0x000007ec               0  .text.clear_rec_buffer
+	$d                                 0x000007f4               0  .text.program_flash
+	$t                                 0x000007f4               0  .text.program_flash
+	$d                                 0x00000880               0  .text.program_flash
+	$d                                 0x00000888               0  .text.JumptoAPP
+	$t                                 0x00000888               0  .text.JumptoAPP
+	$d                                 0x00000898               0  .text.JumptoAPP
+	$d                                 0x0000089c               0  .text.check_jumpAddr
+	$t                                 0x0000089c               0  .text.check_jumpAddr
+	$d                                 0x000008bc               0  .text.check_jumpAddr
+	$d                                 0x000008c0               0  .text.check_boot_option
+	$t                                 0x000008c0               0  .text.check_boot_option
+	$d                                 0x00000944               0  .text.check_boot_option
+	$d                                 0x0000094c               0  .text.controlword_receiving
+	$t                                 0x0000094c               0  .text.controlword_receiving
+	$d                                 0x00000990               0  .text.controlword_receiving
+	$d                                 0x00000998               0  .text.cal_image_checknum
+	$t                                 0x00000998               0  .text.cal_image_checknum
+	$d                                 0x000009c8               0  .text.cal_image_checknum
+	$d                                 0x000009cc               0  .text.verify_lastProg
+	$t                                 0x000009cc               0  .text.verify_lastProg
+	$d                                 0x000009f0               0  .text.verify_lastProg
+	$d                                 0x000009fc               0  .text.boot_process
+	$t                                 0x000009fc               0  .text.boot_process
+	$d                                 0x00000a48               0  .text.boot_process
+	$d                                 0x00000a4c               0  .text.program_process
+	$t                                 0x00000a4c               0  .text.program_process
+	$d                                 0x00000b4c               0  .text.program_process
+	$d                                 0x00000b6c               0  .text.rst_mcu
+	$t                                 0x00000b6c               0  .text.rst_mcu
+	$d                                 0x00000b7c               0  .text.wait_cmd
+	$t                                 0x00000b7c               0  .text.wait_cmd
+	$d                                 0x00000bc8               0  .text.wait_cmd
+	$d                                 0x00000bd0               0  .text.Flash_Read_Word
+	$t                                 0x00000bd0               0  .text.Flash_Read_Word
+	$d                                 0x00000bd4               0  .text.flashErase
+	$t                                 0x00000bd4               0  .text.flashErase
+	$d                                 0x00000c02               0  .text.delayus_Bycode
+	$t                                 0x00000c02               0  .text.delayus_Bycode
+	$d                                 0x00000c2c               0  .text.delayms_Bycode
+	$t                                 0x00000c2c               0  .text.delayms_Bycode
+	$d                                 0x00000c4c               0  .text.PageErase
+	$t                                 0x00000c4c               0  .text.PageErase
+	$d                                 0x00000c68               0  .text.PageErase
+	$d                                 0x00000c70               0  .text.Page_ProgramData
+	$t                                 0x00000c70               0  .text.Page_ProgramData
+	$d                                 0x00000d08               0  .text.Page_ProgramData
+	$d                                 0x00000d10               0  .text.ReadDataOneWord
+	$t                                 0x00000d10               0  .text.ReadDataOneWord
+	$d                                 0x00000d28               0  .text.IFC_interrupt_CMD
+	$t                                 0x00000d28               0  .text.IFC_interrupt_CMD
+	$d                                 0x00000d40               0  .text.IFC_interrupt_CMD
+	$d                                 0x00000d44               0  .text.GPIO_Read_Status
+	$t                                 0x00000d44               0  .text.GPIO_Read_Status
+	$d                                 0x00000d54               0  .text.UART1_CONFIG
+	$t                                 0x00000d54               0  .text.UART1_CONFIG
+	$d                                 0x00000d94               0  .text.UART1_CONFIG
+	$d                                 0x00000da0               0  .text.IFC_CONFIG
+	$t                                 0x00000da0               0  .text.IFC_CONFIG
+	$d                                 0x00000dcc               0  .text.IFC_CONFIG
+	$d                                 0x00000dd0               0  .text.SYSCON_CONFIG
+	$t                                 0x00000dd0               0  .text.SYSCON_CONFIG
+	$d                                 0x00000e08               0  .text.APT32F102_init
+	$t                                 0x00000e08               0  .text.APT32F102_init
+	$d                                 0x00000e30               0  .text.APT32F102_init
+	$d                                 0x00000e38               0  .text.UART0IntHandler
+	$t                                 0x00000e38               0  .text.UART0IntHandler
+	$d                                 0x00000e50               0  .text.UART0IntHandler
+	$d                                 0x00000e54               0  .text.UART1IntHandler
+	$t                                 0x00000e54               0  .text.UART1IntHandler
+	$d                                 0x00000e80               0  .text.UART1IntHandler
+	$d                                 0x00000e84               0  .text.PriviledgeVioHandler
+	$t                                 0x00000e84               0  .text.PriviledgeVioHandler
+	$d                                 0x00000e86               0  .text.PendTrapHandler
+	$t                                 0x00000e86               0  .text.PendTrapHandler
+	$d                                 0x00000e8e               0  .text.Trap3Handler
+	$t                                 0x00000e8e               0  .text.Trap3Handler
+	$d                                 0x00000e96               0  .text.Trap2Handler
+	$t                                 0x00000e96               0  .text.Trap2Handler
+	$d                                 0x00000e9e               0  .text.Trap1Handler
+	$t                                 0x00000e9e               0  .text.Trap1Handler
+	$d                                 0x00000ea6               0  .text.Trap0Handler
+	$t                                 0x00000ea6               0  .text.Trap0Handler
+	$d                                 0x00000eae               0  .text.UnrecExecpHandler
+	$t                                 0x00000eae               0  .text.UnrecExecpHandler
+	$d                                 0x00000eb6               0  .text.BreakPointHandler
+	$t                                 0x00000eb6               0  .text.BreakPointHandler
+	$d                                 0x00000ebe               0  .text.AccessErrHandler
+	$t                                 0x00000ebe               0  .text.AccessErrHandler
+	$d                                 0x00000ec6               0  .text.IllegalInstrHandler
+	$t                                 0x00000ec6               0  .text.IllegalInstrHandler
+	$d                                 0x00000ece               0  .text.MisalignedHandler
+	$t                                 0x00000ece               0  .text.MisalignedHandler
+	$d                                 0x00000ed6               0  .text.UART2IntHandler
+	$t                                 0x00000ed6               0  .text.UART2IntHandler
+	$d                                 0x00000ede               0  .text.IFCIntHandler
+	$t                                 0x00000ede               0  .text.IFCIntHandler
+	$d                                 0x00000ee8               0  .text.startup.main
+	$t                                 0x00000ee8               0  .text.startup.main
+	$d                                 0x00000f4c               0  .text.startup.main
+	patternState                       0x20000074      O        1  .bss
+	codeindex                          0x20000075      O        1  .bss
+	recstatus                          0x20000076      O        1  .bss
+
+	Global Symbols
+
+	Symbol Name                        Value        Type   Size  Section
+	vector_table                       0x00000000               0  .text
+	__start                            0x00000108               0  .text
+	__exit                             0x0000015c               0  .text
+	__fail                             0x00000172               0  .text
+	DummyHandler                       0x00000180               0  .text
+	__modsi3                           0x000001b0      F       86  .text
+	__rem32                            0x000001b0      F       86  .text
+	__memset_fast                      0x00000208    w F      136  .text
+	memset                             0x00000208    w F      136  .text
+	__memcpy_fast                      0x00000290    w F      100  .text
+	memcpy                             0x00000290    w F      100  .text
+	__main                             0x000002f4      F       56  .text.__main
+	SYSCON_RST_VALUE                   0x000003a4      F       88  .text.SYSCON_RST_VALUE
+	SYSCON_General_CMD                 0x000003fc      F       48  .text.SYSCON_General_CMD
+	SystemCLK_HCLKDIV_PCLKDIV_Config   0x0000042c      F      124  .text.SystemCLK_HCLKDIV_PCLKDIV_Config
+	SYSCON_HFOSC_SELECTE               0x000004a8      F       40  .text.SYSCON_HFOSC_SELECTE
+	SYSCON_WDT_CMD                     0x000004d0      F       60  .text.SYSCON_WDT_CMD
+	SYSCON_IWDCNT_Reload               0x0000050c      F       20  .text.SYSCON_IWDCNT_Reload
+	SYSCON_IWDCNT_Config               0x00000520      F       24  .text.SYSCON_IWDCNT_Config
+	SYSCON_Software_Reset              0x00000538      F       20  .text.SYSCON_Software_Reset
+	UART1_DeInit                       0x0000054c      F       24  .text.UART1_DeInit
+	UART1_Int_Enable                   0x00000564      F       28  .text.UART1_Int_Enable
+	UARTInitRxTxIntEn                  0x00000580      F       16  .text.UARTInitRxTxIntEn
+	UARTTxByte                         0x00000590      F       14  .text.UARTTxByte
+	check_pattern_code                 0x000005a0      F       92  .text.check_pattern_code
+	ProgUartPageRec                    0x000005fc      F      160  .text.ProgUartPageRec
+	SendBackStr                        0x0000069c      F       56  .text.SendBackStr
+	ErrMsgSend                         0x000006d4      F      160  .text.ErrMsgSend
+	check_program_start                0x00000774      F       48  .text.check_program_start
+	check_program_end                  0x000007a4      F       32  .text.check_program_end
+	clear_rec_buffer                   0x000007c4      F       48  .text.clear_rec_buffer
+	program_flash                      0x000007f4      F      148  .text.program_flash
+	JumptoAPP                          0x00000888      F       20  .text.JumptoAPP
+	check_jumpAddr                     0x0000089c      F       36  .text.check_jumpAddr
+	check_boot_option                  0x000008c0      F      140  .text.check_boot_option
+	controlword_receiving              0x0000094c      F       76  .text.controlword_receiving
+	cal_image_checknum                 0x00000998      F       52  .text.cal_image_checknum
+	verify_lastProg                    0x000009cc      F       48  .text.verify_lastProg
+	boot_process                       0x000009fc      F       80  .text.boot_process
+	program_process                    0x00000a4c      F      288  .text.program_process
+	rst_mcu                            0x00000b6c      F       16  .text.rst_mcu
+	wait_cmd                           0x00000b7c      F       84  .text.wait_cmd
+	Flash_Read_Word                    0x00000bd0      F        4  .text.Flash_Read_Word
+	flashErase                         0x00000bd4      F       46  .text.flashErase
+	delayus_Bycode                     0x00000c02      F       42  .text.delayus_Bycode
+	delayms_Bycode                     0x00000c2c      F       30  .text.delayms_Bycode
+	PageErase                          0x00000c4c      F       36  .text.PageErase
+	Page_ProgramData                   0x00000c70      F      160  .text.Page_ProgramData
+	ReadDataOneWord                    0x00000d10      F       22  .text.ReadDataOneWord
+	IFC_interrupt_CMD                  0x00000d28      F       28  .text.IFC_interrupt_CMD
+	GPIO_Read_Status                   0x00000d44      F       16  .text.GPIO_Read_Status
+	UART1_CONFIG                       0x00000d54      F       76  .text.UART1_CONFIG
+	IFC_CONFIG                         0x00000da0      F       48  .text.IFC_CONFIG
+	SYSCON_CONFIG                      0x00000dd0      F       56  .text.SYSCON_CONFIG
+	APT32F102_init                     0x00000e08      F       48  .text.APT32F102_init
+	UART0IntHandler                    0x00000e38      F       28  .text.UART0IntHandler
+	UART1IntHandler                    0x00000e54      F       48  .text.UART1IntHandler
+	PriviledgeVioHandler               0x00000e84      F        2  .text.PriviledgeVioHandler
+	PendTrapHandler                    0x00000e86      F        8  .text.PendTrapHandler
+	Trap3Handler                       0x00000e8e      F        8  .text.Trap3Handler
+	Trap2Handler                       0x00000e96      F        8  .text.Trap2Handler
+	Trap1Handler                       0x00000e9e      F        8  .text.Trap1Handler
+	Trap0Handler                       0x00000ea6      F        8  .text.Trap0Handler
+	UnrecExecpHandler                  0x00000eae      F        8  .text.UnrecExecpHandler
+	BreakPointHandler                  0x00000eb6      F        8  .text.BreakPointHandler
+	AccessErrHandler                   0x00000ebe      F        8  .text.AccessErrHandler
+	IllegalInstrHandler                0x00000ec6      F        8  .text.IllegalInstrHandler
+	MisalignedHandler                  0x00000ece      F        8  .text.MisalignedHandler
+	UART2IntHandler                    0x00000ed6      F        8  .text.UART2IntHandler
+	IFCIntHandler                      0x00000ede      F        8  .text.IFCIntHandler
+	main                               0x00000ee8      F      104  .text.startup.main
+	_end_rodata                        0x00000f98               0  .rodata
+	_start_data                        0x20000000               0  .data
+	startpattern                       0x20000000      O        8  .data
+	rstpattern                         0x20000008      O        8  .data
+	HWD                                0x20000010      O        4  .data
+	CRC                                0x20000014      O        4  .data
+	BT1                                0x20000018      O        4  .data
+	BT0                                0x2000001c      O        4  .data
+	WWDT                               0x20000020      O        4  .data
+	LPT                                0x20000024      O        4  .data
+	RTC                                0x20000028      O        4  .data
+	ETCB                               0x2000002c      O        4  .data
+	EPT0                               0x20000030      O        4  .data
+	GPT0                               0x20000034      O        4  .data
+	CA0                                0x20000038      O        4  .data
+	SIO0                               0x2000003c      O        4  .data
+	I2C0                               0x20000040      O        4  .data
+	SPI0                               0x20000044      O        4  .data
+	UART2                              0x20000048      O        4  .data
+	UART1                              0x2000004c      O        4  .data
+	UART0                              0x20000050      O        4  .data
+	GPIOGRP                            0x20000054      O        4  .data
+	GPIOB0                             0x20000058      O        4  .data
+	GPIOA0                             0x2000005c      O        4  .data
+	ADC0                               0x20000060      O        4  .data
+	TKEY                               0x20000064      O        4  .data
+	SYSCON                             0x20000068      O        4  .data
+	IFC                                0x2000006c      O        4  .data
+	CK801                              0x20000070      O        4  .data
+	_end_data                          0x20000074               0  .data
+	_bss_start                         0x20000074               0  .bss
+	startflag                          0x20000077      O        1  .bss
+	imagesize                          0x20000078      O        4  .bss
+	programendflagcnt                  0x2000007c      O        4  .bss
+	rstflag                            0x20000080      O        1  .bss
+	indx                               0x20000084      O        4  .bss
+	recbufdatalen                      0x20000088      O        4  .bss
+	recbuf_full                        0x2000008c      O        1  .bss
+	binEndAddrReced                    0x20000090      O        4  .bss
+	addroffset                         0x20000094      O        4  .bss
+	programcnt                         0x20000098      O        4  .bss
+	binStartAddrReced                  0x2000009c      O        4  .bss
+	CheckNumReced                      0x200000a0      O        4  .bss
+	progfailed                         0x200000a4      O        1  .bss
+	APPjmpAddrReced                    0x200000a8      O        4  .bss
+	g_error                            0x200000ac      O        4  .bss
+	stopflag                           0x200000b0      O        1  .bss
+	g_flashID                          0x200000b4      O        4  .bss
+	wtdogtimeout                       0x200000b8      O        1  .bss
+	sysState                           0x200000bc      O        1  .bss
+	ret                                0x200000c0      O        4  .bss
+	g_rwBuffer                         0x200000c4      O      256  .bss
+	_ebss                              0x200001c4               0  .bss
+	_end                               0x200001c4               0  .bss
+	end                                0x200001c4               0  .bss
+	__kernel_stack                     0x20000ff8               0  .text
+
+	(w:Weak    d:Deubg    F:Function    f:File name    O:Zero)
+
+
+======================================================================
+
+Memory Map of the image
+
+    Image Entry point : 0x00000108
+
+    Region ROM (Base: 0x00000000, Size: 0x00000f98, Max: 0x00001000)
+
+    Base Addr    Size         Type   Attr      Idx   Section Name       Object
+    0x00000000   0x000001b0   Code   RO         16  .text          	Obj/arch_crt0.o
+    0x000001b0   0x00000056   Code   RO        357  .text          	_modsi3.o
+    0x00000206   0x00000002   PAD
+    0x00000208   0x00000088   Code   RO        369  .text          	memset_fast.o
+    0x00000290   0x00000064   Code   RO        374  .text          	memcpy_fast.o
+    0x000002f4   0x00000038   Code   RO         28  .text.__main   	Obj/arch_mem_init.o
+    0x0000032c   0x00000078   Code   RO         43  .text.SYSCON_General_CMD.part.0	Obj/FWlib_apt32f102_syscon.o
+    0x000003a4   0x00000058   Code   RO         44  .text.SYSCON_RST_VALUE	Obj/FWlib_apt32f102_syscon.o
+    0x000003fc   0x00000030   Code   RO         46  .text.SYSCON_General_CMD	Obj/FWlib_apt32f102_syscon.o
+    0x0000042c   0x0000007c   Code   RO         47  .text.SystemCLK_HCLKDIV_PCLKDIV_Config	Obj/FWlib_apt32f102_syscon.o
+    0x000004a8   0x00000028   Code   RO         49  .text.SYSCON_HFOSC_SELECTE	Obj/FWlib_apt32f102_syscon.o
+    0x000004d0   0x0000003c   Code   RO         50  .text.SYSCON_WDT_CMD	Obj/FWlib_apt32f102_syscon.o
+    0x0000050c   0x00000014   Code   RO         51  .text.SYSCON_IWDCNT_Reload	Obj/FWlib_apt32f102_syscon.o
+    0x00000520   0x00000018   Code   RO         52  .text.SYSCON_IWDCNT_Config	Obj/FWlib_apt32f102_syscon.o
+    0x00000538   0x00000014   Code   RO         91  .text.SYSCON_Software_Reset	Obj/FWlib_apt32f102_syscon.o
+    0x0000054c   0x00000018   Code   RO        108  .text.UART1_DeInit	Obj/FWlib_apt32f102_uart.o
+    0x00000564   0x0000001c   Code   RO        112  .text.UART1_Int_Enable	Obj/FWlib_apt32f102_uart.o
+    0x00000580   0x00000010   Code   RO        116  .text.UARTInitRxTxIntEn	Obj/FWlib_apt32f102_uart.o
+    0x00000590   0x0000000e   Code   RO        117  .text.UARTTxByte	Obj/FWlib_apt32f102_uart.o
+    0x000005a0   0x0000005c   Code   RO        135  .text.check_pattern_code	Obj/FWlib_btloaderPub.o
+    0x000005fc   0x000000a0   Code   RO        136  .text.ProgUartPageRec	Obj/FWlib_btloaderPub.o
+    0x0000069c   0x00000038   Code   RO        137  .text.SendBackStr	Obj/FWlib_btloaderPub.o
+    0x000006d4   0x000000a0   Code   RO        138  .text.ErrMsgSend	Obj/FWlib_btloaderPub.o
+    0x00000774   0x00000030   Code   RO        140  .text.check_program_start	Obj/FWlib_btloaderPub.o
+    0x000007a4   0x00000020   Code   RO        141  .text.check_program_end	Obj/FWlib_btloaderPub.o
+    0x000007c4   0x00000030   Code   RO        142  .text.clear_rec_buffer	Obj/FWlib_btloaderPub.o
+    0x000007f4   0x00000094   Code   RO        143  .text.program_flash	Obj/FWlib_btloaderPub.o
+    0x00000888   0x00000014   Code   RO        144  .text.JumptoAPP	Obj/FWlib_btloaderPub.o
+    0x0000089c   0x00000024   Code   RO        145  .text.check_jumpAddr	Obj/FWlib_btloaderPub.o
+    0x000008c0   0x0000008c   Code   RO        146  .text.check_boot_option	Obj/FWlib_btloaderPub.o
+    0x0000094c   0x0000004c   Code   RO        147  .text.controlword_receiving	Obj/FWlib_btloaderPub.o
+    0x00000998   0x00000034   Code   RO        148  .text.cal_image_checknum	Obj/FWlib_btloaderPub.o
+    0x000009cc   0x00000030   Code   RO        149  .text.verify_lastProg	Obj/FWlib_btloaderPub.o
+    0x000009fc   0x00000050   Code   RO        150  .text.boot_process	Obj/FWlib_btloaderPub.o
+    0x00000a4c   0x00000120   Code   RO        151  .text.program_process	Obj/FWlib_btloaderPub.o
+    0x00000b6c   0x00000010   Code   RO        152  .text.rst_mcu  	Obj/FWlib_btloaderPub.o
+    0x00000b7c   0x00000054   Code   RO        153  .text.wait_cmd 	Obj/FWlib_btloaderPub.o
+    0x00000bd0   0x00000004   Code   RO        172  .text.Flash_Read_Word	Obj/FWlib_btloaderDriver.o
+    0x00000bd4   0x0000002e   Code   RO        173  .text.flashErase	Obj/FWlib_btloaderDriver.o
+    0x00000c02   0x0000002a   Code   RO        189  .text.delayus_Bycode	Obj/FWlib_apt32f102_delay.o
+    0x00000c2c   0x0000001e   Code   RO        191  .text.delayms_Bycode	Obj/FWlib_apt32f102_delay.o
+    0x00000c4c   0x00000024   Code   RO        210  .text.PageErase	Obj/FWlib_apt32f102_ifc.o
+    0x00000c70   0x000000a0   Code   RO        212  .text.Page_ProgramData	Obj/FWlib_apt32f102_ifc.o
+    0x00000d10   0x00000016   Code   RO        214  .text.ReadDataOneWord	Obj/FWlib_apt32f102_ifc.o
+    0x00000d28   0x0000001c   Code   RO        215  .text.IFC_interrupt_CMD	Obj/FWlib_apt32f102_ifc.o
+    0x00000d44   0x00000010   Code   RO        237  .text.GPIO_Read_Status	Obj/FWlib_apt32f102_gpio.o
+    0x00000d54   0x0000004c   Code   RO        255  .text.UART1_CONFIG	Obj/apt32f102_initial.o
+    0x00000da0   0x00000030   Code   RO        256  .text.IFC_CONFIG	Obj/apt32f102_initial.o
+    0x00000dd0   0x00000038   Code   RO        257  .text.SYSCON_CONFIG	Obj/apt32f102_initial.o
+    0x00000e08   0x00000030   Code   RO        258  .text.APT32F102_init	Obj/apt32f102_initial.o
+    0x00000e38   0x0000001c   Code   RO        274  .text.UART0IntHandler	Obj/apt32f102_interrupt.o
+    0x00000e54   0x00000030   Code   RO        275  .text.UART1IntHandler	Obj/apt32f102_interrupt.o
+    0x00000e84   0x00000002   Code   RO        276  .text.PriviledgeVioHandler	Obj/apt32f102_interrupt.o
+    0x00000e86   0x00000008   Code   RO        278  .text.PendTrapHandler	Obj/apt32f102_interrupt.o
+    0x00000e8e   0x00000008   Code   RO        279  .text.Trap3Handler	Obj/apt32f102_interrupt.o
+    0x00000e96   0x00000008   Code   RO        280  .text.Trap2Handler	Obj/apt32f102_interrupt.o
+    0x00000e9e   0x00000008   Code   RO        281  .text.Trap1Handler	Obj/apt32f102_interrupt.o
+    0x00000ea6   0x00000008   Code   RO        282  .text.Trap0Handler	Obj/apt32f102_interrupt.o
+    0x00000eae   0x00000008   Code   RO        283  .text.UnrecExecpHandler	Obj/apt32f102_interrupt.o
+    0x00000eb6   0x00000008   Code   RO        284  .text.BreakPointHandler	Obj/apt32f102_interrupt.o
+    0x00000ebe   0x00000008   Code   RO        285  .text.AccessErrHandler	Obj/apt32f102_interrupt.o
+    0x00000ec6   0x00000008   Code   RO        286  .text.IllegalInstrHandler	Obj/apt32f102_interrupt.o
+    0x00000ece   0x00000008   Code   RO        287  .text.MisalignedHandler	Obj/apt32f102_interrupt.o
+    0x00000ed6   0x00000008   Code   RO        288  .text.UART2IntHandler	Obj/apt32f102_interrupt.o
+    0x00000ede   0x00000008   Code   RO        289  .text.IFCIntHandler	Obj/apt32f102_interrupt.o
+    0x00000ee8   0x00000068   Code   RO        304  .text.startup.main	Obj/main.o
+    0x00000f50   0x0000003c   Data   RO        154  .rodata        	Obj/FWlib_btloaderPub.o
+    0x00000f8c   0x0000000a   Data   RO        155  .rodata.str1.1 	Obj/FWlib_btloaderPub.o
+    0x00000f96   0x00000002   PAD
+
+    Region RAM (Base: 0x20000000, Size: 0x000001c4, Max: 0x00001000)
+
+    Base Addr    Size         Type   Attr      Idx   Section Name       Object
+    0x20000000   0x00000010   Data   RW        133  .data          	Obj/FWlib_btloaderPub.o
+    0x20000010   0x00000064   Data   RW        317  .data          	Obj/drivers_apt32f102.o
+    0x20000074   0x00000045   Zero   RW        134  .bss           	Obj/FWlib_btloaderPub.o
+    0x200000b9   0x00000003   PAD
+    0x200000bc   0x00000008   Zero   RW        303  .bss           	Obj/main.o
+    0x200000c4   0x00000100   Zero   RW        168  COMMON         	Obj/FWlib_btloaderPub.o
+
+    Region *default* (Base: 0x00000000, Size: 0x00000000, Max: 0xffffffff)
+
+
+======================================================================
+
+Image component sizes
+
+       Code    RO Data    RW Data    ZI Data      Debug   Object Name
+
+          0          0          0          0          0   linker stubs
+        432          0          0          0        435   Obj/arch_crt0.o
+         56          0          0          0        889   Obj/arch_mem_init.o
+        544          0          0          0      19585   Obj/FWlib_apt32f102_syscon.o
+         82          0          0          0       9485   Obj/FWlib_apt32f102_uart.o
+       1584         70         16        325      13321   Obj/FWlib_btloaderPub.o
+         50          0          0          0       8267   Obj/FWlib_btloaderDriver.o
+         72          0          0          0       1367   Obj/FWlib_apt32f102_delay.o
+        246          0          0          0      16252   Obj/FWlib_apt32f102_ifc.o
+         16          0          0          0       8172   Obj/FWlib_apt32f102_gpio.o
+        228          0          0          0       9327   Obj/apt32f102_initial.o
+        174          0          0          0       8706   Obj/apt32f102_interrupt.o
+        104          0          0          8       7980   Obj/main.o
+          0          0        100          0       7773   Obj/drivers_apt32f102.o
+          0          0          0          0          0   Obj/drivers_apt32f102_ck801.o
+          0          0          0          0          0   Obj/__rt_entry.o
+	------------------------------------------------------------
+       3588         70        116        333     111559   Object Totals
+          2          2          0          3          0   Pad
+          0          0          0          0          0   LD_GEN
+
+	------------------------------------------------------------
+    [Library Name]: d:/c-sky/cdk/csky/mingw/csky-abiv2-elf-toolchain/bin/../lib/gcc/csky-elfabiv2/6.3.0/ck801\libgcc.a
+	------------------------------------------------------------
+       Code    RO Data    RW Data    ZI Data      Debug   Library Member Name
+
+         86          0          0          0          0   _modsi3.o
+	------------------------------------------------------------
+         86          0          0          0          0   Library Totals
+          0          0          0          0          0   Pad
+          0          0          0          0          0   LD_GEN
+
+	------------------------------------------------------------
+    [Library Name]: d:/c-sky/cdk/csky/mingw/csky-abiv2-elf-toolchain/bin/../lib/gcc/csky-elfabiv2/6.3.0/../../../../csky-elfabiv2/lib/ck801\libc.a
+	------------------------------------------------------------
+       Code    RO Data    RW Data    ZI Data      Debug   Library Member Name
+
+        136          0          0          0          0   memset_fast.o
+        100          0          0          0          0   memcpy_fast.o
+	------------------------------------------------------------
+        236          0          0          0          0   Library Totals
+          0          0          0          0          0   Pad
+          0          0          0          0          0   LD_GEN
+
+	------------------------------------------------------------
+
+======================================================================
+
+
+       Code    RO Data    RW Data    ZI Data      Debug
+       3912         72        116        336     111559   Grand Totals
+       3912         72        116        336     111559   Elf Image Totals
+       3912         72        116          0          0   ROM Totals
+
+======================================================================
+
+Total	RO	Size (Code + RO Data)				3984 (  3.89kB)
+Total	RW	Size (RW Data + ZI Data)			452 (  0.44kB)
+Total	ROM	Size (Code + RO Data + RW Data)		4100 (  4.00kB)
+
+======================================================================

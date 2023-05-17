@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Session Name="E:\Lewis\BT-013\SoftwareMaterial\SourceCode\Current_Verson\app_test\apt32f102.cdkws">
+  <int Value="0" Name="m_selectedTab"/>
+  <wxString Value="E:\Lewis\BT-013\SoftwareMaterial\SourceCode\Current_Verson\app_test\apt32f102.cdkws" Name="m_workspaceName"/>
+  <TabInfoArray Name="TabInfoArray"/>
+  <SerializedObject Name="m_breakpoints">
+    <long Value="0" Name="Count"/>
+  </SerializedObject>
+</Session>

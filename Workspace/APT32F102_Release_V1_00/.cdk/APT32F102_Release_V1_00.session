@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Session Name="F:\cai\Klein Tool\charging case\Race_V2.4 -T - NTC\Workspace\APT32F102_Release_V1_00\APT32F102_Release_V1_00.cdkws">
+  <int Value="2" Name="m_selectedTab"/>
+  <wxString Value="F:\cai\Klein Tool\charging case\Race_V2.4 -T - NTC\Workspace\APT32F102_Release_V1_00\APT32F102_Release_V1_00.cdkws" Name="m_workspaceName"/>
+  <TabInfoArray Name="TabInfoArray">
+    <TabInfo>
+      <wxString Value="F:\cai\Klein Tool\charging case\Race_V2.4 -T - NTC\app_test\main.c" Name="FileName"/>
+      <int Value="12" Name="FirstVisibleLine"/>
+      <int Value="19" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="f:\cai\klein tool\charging case\race_v2.4 -t - ntc\app_test\app\dev_head.h" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="F:\cai\Klein Tool\charging case\Race_V2.4 -T - NTC\bootloader\main.c" Name="FileName"/>
+      <int Value="25" Name="FirstVisibleLine"/>
+      <int Value="34" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+  </TabInfoArray>
+  <SerializedObject Name="m_breakpoints">
+    <long Value="0" Name="Count"/>
+  </SerializedObject>
+</Session>
