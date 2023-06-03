@@ -5,6 +5,7 @@
 enum APP_BATTERY_STATUS_T battery_status = APP_BATTERY_STATUS_INVALID;
 enum APP_EARPHONE_STATUS_T earphone_status = APP_EARPHONE_STATUS_INVALID;
 enum APP_HALL_STATUS_T hall_status = APP_HALL_STATUS_INVALID;
+enum APP_NTC_STATUS_T NTC_status = APP_NTC_STATUS_INVALID;
 
 U8_T battery_percentage = 100; //电量百分比
 
@@ -16,9 +17,11 @@ struct APP_100_MILLISECOND_TIMER_STRUCT app_100_millisecond_array[] =
     INIT_APP_TIMER(APP_DEEP_SLEEP_TIMER_ID, FALSE, FALSE, 0, 100, system_goto_deepsleep_mode, 0),
 	INIT_APP_TIMER(APP_BATTERY_TIMER_ID, FALSE, TRUE, 0, 80, BatteryPowerCheck, 0),
 	INIT_APP_TIMER(APP_EARPHONE_STATUS_CHECK_TIMER_ID, FALSE, FALSE, 0, 20, EarphoneStatusCheck, 0),//延时拉高2秒5V使POGO Pin电压稳定
-	INIT_APP_TIMER(APP_OVERCURRENT_TIMER_ID, FALSE, TRUE, 0, 1, EarphoneOvercurrentCheck, 0),
+	INIT_APP_TIMER(APP_OVERCURRENT_TIMER_ID, FALSE, TRUE, 0, 2, EarphoneOvercurrentCheck, 0),
 	INIT_APP_TIMER(APP_EARPHONE_WAKEUP_TIMER_ID, FALSE, FALSE, 0, 4, EarphoneWakeUp, 0),//延时拉高400ms 5V唤醒耳机
+	INIT_APP_TIMER(APP_NTC_TIMER_ID, FALSE, TRUE, 0, 50, NTCStatusCheck, 0),
 };
+
 
 void app_stop_100_millisecond_timer(U8_T timer_id)
 {
@@ -79,6 +82,51 @@ void app_100_millisecond_timer_check(void)
         timer++;
     }
 }
+
+S8_T pogo_pin_output_contrl(enum APP_OUTPUT_TYPE_T output_type)
+{
+	printf("%s: %d\r\n",__func__, output_type);
+	switch(output_type)
+	{
+		case APP_OUTPUT_TYPE_BOOST5V:
+			GPIO_Write_High(charge_5V_boost_pin);
+			GPIO_Init(pattern_TX_pin, Output);
+			GPIO_Write_Low(pattern_TX_pin);
+			GPIO_InPutOutPut_Disable(pattern_RX_pin);
+			GPIO_Write_Low(pattern_RX_pin);
+			UART2_Int_Disable();
+		break;
+
+		case APP_OUTPUT_TYPE_SENDDATA:
+			GPIO_Write_Low(charge_5V_boost_pin);
+			UART_IO_Init(IO_UART2, 2);
+			GPIO_Init(pattern_RX_pin, Output);
+			GPIO_Write_High(pattern_RX_pin);
+			UART2_Int_Disable();//禁止uart接收中断
+		break;
+
+		case APP_OUTPUT_TYPE_REVDATA:
+			GPIO_Write_Low(charge_5V_boost_pin);
+			UART_IO_Init(IO_UART2, 2);
+			UART2_Int_Enable();//启用uart接收中断
+		break;
+
+		case APP_OUTPUT_TYPE_OUTPUTLOW:
+			GPIO_Write_Low(charge_5V_boost_pin);
+			GPIO_Init(pattern_TX_pin, Output);
+			GPIO_Write_Low(pattern_TX_pin);
+			GPIO_InPutOutPut_Disable(pattern_RX_pin);
+			GPIO_Write_Low(pattern_RX_pin);
+			UART2_Int_Disable();
+		break;
+
+		default:
+			printf("invaild output type!\r\n");
+		break;
+	}
+	return 0;
+}
+
 
 enum APP_CHARGE_TYPE_T app_charge_type_get(void)
 {
@@ -162,6 +210,136 @@ enum APP_EARPHONE_STATUS_T earphone_status_get(void)
 	return earphone_status;
 }
 
+enum APP_NTC_STATUS_T ntc_status_get(void)
+{
+	return NTC_status;
+}
+
+void ntc_status_update(enum APP_NTC_STATUS_T status)
+{
+	printf("%s: %d\r\n",__func__, status);
+
+	NTC_status = status;
+}
+
+S8_T charge_current_control(enum APP_NTC_STATUS_T ntc_status, enum APP_CHARGE_TYPE_T charge_type)
+{
+	printf("%s: %d %d\r\n",__func__, ntc_status, charge_type);
+
+	switch(ntc_status)
+	{
+		case APP_NTC_STATUS_STOPCHG:
+			GPIO_InPutOutPut_Disable(charge_wireless_iset_pin);
+			GPIO_PullHighLow_DIS(charge_wireless_iset_pin);//烧录复用口要禁用内部上下拉，否则会带来待机功耗
+			GPIO_InPutOutPut_Disable(charge_wired_iset_pin);
+			GPIO_PullHighLow_DIS(charge_wired_iset_pin);
+		break;
+
+		case APP_NTC_STATUS_NORMAL_HIGH_TEMP:
+			if(charge_type == APP_CHARGE_TYPE_WIRED) {
+				GPIO_Init(charge_wireless_iset_pin, Output); /* 输出模式，输入禁止 */
+				GPIO_PullHighLow_DIS(charge_wireless_iset_pin);//烧录复用口要禁用内部上下拉，否则会带来待机功耗
+				GPIO_Write_Low(charge_wireless_iset_pin);
+
+				GPIO_Init(charge_wired_iset_pin, Output); /* 输出模式，输入禁止 */
+				GPIO_PullHighLow_DIS(charge_wired_iset_pin);
+				GPIO_Write_Low(charge_wired_iset_pin);
+			} else if(charge_type == APP_CHARGE_TYPE_WIRELESS){
+				GPIO_Init(charge_wireless_iset_pin, Output); /* 输出模式，输入禁止 */
+				GPIO_PullHighLow_DIS(charge_wireless_iset_pin);//烧录复用口要禁用内部上下拉，否则会带来待机功耗
+				GPIO_Write_Low(charge_wireless_iset_pin);
+			
+				GPIO_InPutOutPut_Disable(charge_wired_iset_pin);
+				GPIO_PullHighLow_DIS(charge_wired_iset_pin);
+			} else{
+				GPIO_InPutOutPut_Disable(charge_wireless_iset_pin);
+				GPIO_PullHighLow_DIS(charge_wireless_iset_pin);//烧录复用口要禁用内部上下拉，否则会带来待机功耗
+				GPIO_InPutOutPut_Disable(charge_wired_iset_pin);
+				GPIO_PullHighLow_DIS(charge_wired_iset_pin);
+			}
+		break;
+
+		case APP_NTC_STATUS_NORMAL_LOW_TEMP:
+			GPIO_InPutOutPut_Disable(charge_wireless_iset_pin);
+			GPIO_PullHighLow_DIS(charge_wireless_iset_pin);//烧录复用口要禁用内部上下拉，否则会带来待机功耗
+			GPIO_InPutOutPut_Disable(charge_wired_iset_pin);
+			GPIO_PullHighLow_DIS(charge_wired_iset_pin);
+		break;
+			
+		default:
+		break;
+	}
+	return 0;
+}
+
+//判断NTC状态
+enum APP_NTC_STATUS_T ntc_status_measure(U32_T ntc_mv) 
+{
+	enum APP_NTC_STATUS_T ntc_status = APP_NTC_STATUS_INVALID;
+
+	switch(ntc_status_get())
+	{
+		case APP_NTC_STATUS_STOPCHG:
+			if(ntc_mv <= APP_NTC_RECHG_HIGH_MV && ntc_mv >= APP_NTC_RECHG_LOW_MV)//复充温度
+			{
+				if(ntc_mv <= APP_NTC_STOPCHG_HIGH_MV && ntc_mv >= APP_NTC_NORMAL_MV) {
+					ntc_status = APP_NTC_STATUS_NORMAL_LOW_TEMP;
+				} else if(ntc_mv < APP_NTC_NORMAL_MV && ntc_mv >= APP_NTC_STOPCHG_LOW_MV){
+					ntc_status = APP_NTC_STATUS_NORMAL_HIGH_TEMP;
+				}
+			}
+		break;
+
+		case APP_NTC_STATUS_NORMAL_HIGH_TEMP:
+		case APP_NTC_STATUS_NORMAL_LOW_TEMP:
+			if(ntc_mv > APP_NTC_STOPCHG_HIGH_MV || ntc_mv < APP_NTC_STOPCHG_LOW_MV) 
+				ntc_status = APP_NTC_STATUS_STOPCHG;
+		break;
+			
+		default:
+			if(ntc_mv > APP_NTC_STOPCHG_HIGH_MV || ntc_mv < APP_NTC_STOPCHG_LOW_MV) {
+				ntc_status = APP_NTC_STATUS_STOPCHG;
+			} else if(ntc_mv <= APP_NTC_STOPCHG_HIGH_MV && ntc_mv >= APP_NTC_NORMAL_MV) {
+				ntc_status = APP_NTC_STATUS_NORMAL_LOW_TEMP;
+			} else if(ntc_mv < APP_NTC_NORMAL_MV && ntc_mv >= APP_NTC_STOPCHG_LOW_MV){
+				ntc_status = APP_NTC_STATUS_NORMAL_HIGH_TEMP;
+			}
+		break;
+	}
+
+	return ntc_status;
+}
+
+void NTCStatusCheck(U8_T parm)
+{
+	static U8_T ntc_trigger_cnt = 0, status_change_flag = FALSE;
+	U32_T ntc_mv = 0;
+	static enum APP_NTC_STATUS_T pre_ntc_status = APP_NTC_STATUS_INVALID;
+	enum APP_NTC_STATUS_T ntc_status = APP_NTC_STATUS_INVALID;
+
+	ntc_mv = ntc_adc_to_mv(adc_get_val(NTC_ADC));
+	printf("NTC: %ldmv\r\n", ntc_mv);
+	ntc_status = ntc_status_measure(ntc_mv);
+
+	if(pre_ntc_status != ntc_status) {//NTC状态改变
+		status_change_flag = TRUE;
+		ntc_trigger_cnt = 0;
+		pre_ntc_status = ntc_status;
+	} else{
+		if(status_change_flag == TRUE)
+		{
+			ntc_trigger_cnt++;
+			if(ntc_trigger_cnt >= 2)//连续检测到三次一样则更新NTC状态
+			{
+				ntc_trigger_cnt = 0;
+				status_change_flag = FALSE;
+				ntc_status_update(ntc_status);
+				app_stop_100_millisecond_timer(APP_NTC_TIMER_ID);//更新后停止定时器，作为信号量发送用
+			}
+		}
+	}
+}
+
 //检测耳机状态前要先升5V
 void EarphoneStatusCheck(U8_T parm)
 {
@@ -171,11 +349,9 @@ void EarphoneStatusCheck(U8_T parm)
 
 	L_pogo_adc = adc_get_val(L_EARBUD_POGO_ADC);
 	R_pogo_adc = adc_get_val(R_EARBUD_POGO_ADC);
+	/*
 	if(pogo_adc_to_mA(L_pogo_adc) >= EARPHONE_OVER_CURRENT_MA || pogo_adc_to_mA(R_pogo_adc) >= EARPHONE_OVER_CURRENT_MA) {
-		GPIO_Write_Low(charge_5V_boost_pin);
-		GPIO_Init(pattern_TX_pin, Output);
-		GPIO_Write_Low(pattern_TX_pin);
-		GPIO_InPutOutPut_Disable(pattern_RX_pin);
+		pogo_pin_output_contrl(APP_OUTPUT_TYPE_OUTPUTLOW);
 		GPIO_Write_Low(charge_enable_pin);
 		earphone_status_update(APP_EARPHONE_STATUS_OVER_CURRENT);
 		app_battery_status_update(APP_BATTERY_STATUS_ERROR);//设置电池处理错误状态
@@ -186,21 +362,17 @@ void EarphoneStatusCheck(U8_T parm)
 		app_stop_100_millisecond_timer(APP_DEEP_SLEEP_TIMER_ID);	
 		printf("earphone charging overcurrent!!!: L: %lu, %lumA  R: %lu, %lumA\r\n",\
 			L_pogo_adc, pogo_adc_to_mA(L_pogo_adc), R_pogo_adc, pogo_adc_to_mA(R_pogo_adc));
-	} else if(pogo_adc_to_mA(L_pogo_adc) <= 0 && pogo_adc_to_mA(R_pogo_adc) <= 0){
-		GPIO_Write_Low(charge_5V_boost_pin);
-		GPIO_Init(pattern_TX_pin, Output);
-		GPIO_Write_Low(pattern_TX_pin);
-		GPIO_InPutOutPut_Disable(pattern_RX_pin);
+	}
+	*/
+	if(pogo_adc_to_mA(L_pogo_adc) <= 0 && pogo_adc_to_mA(R_pogo_adc) <= 0){
+		pogo_pin_output_contrl(APP_OUTPUT_TYPE_OUTPUTLOW);
 		earphone_status_update(APP_EARPHONE_STATUS_NO_IN_BOX);
 		printf("no earphones in box: L: %lu, %lumA  R: %lu, %lumA\r\n",\
 			L_pogo_adc, pogo_adc_to_mA(L_pogo_adc), R_pogo_adc, pogo_adc_to_mA(R_pogo_adc));
 	} else{
-		GPIO_Write_High(charge_5V_boost_pin);
-		GPIO_Init(pattern_TX_pin, Output);
-		GPIO_Write_Low(pattern_TX_pin);
-		GPIO_InPutOutPut_Disable(pattern_RX_pin);
+		pogo_pin_output_contrl(APP_OUTPUT_TYPE_BOOST5V);
 		earphone_status_update(APP_EARPHONE_STATUS_CHARGING);
-		app_status_indication_set(APP_STATUS_INDICATION_CHARGING_FOR_EARPHONE);
+		if(app_charge_type_get() == APP_CHARGE_TYPE_DISCHARGE) app_status_indication_set(APP_STATUS_INDICATION_CHARGING_FOR_EARPHONE);
 		printf("charge for earphones: L: %lu, %lumA  R: %lu, %lumA\r\n",\
 			L_pogo_adc, pogo_adc_to_mA(L_pogo_adc), R_pogo_adc, pogo_adc_to_mA(R_pogo_adc));
 	}
@@ -209,14 +381,18 @@ void EarphoneStatusCheck(U8_T parm)
 void EarphoneOvercurrentCheck(U8_T parm)
 {
 	U32_T L_pogo_adc, R_pogo_adc;
+	static U8_T overcur_cnt = 0;
 
 	L_pogo_adc = adc_get_val(L_EARBUD_POGO_ADC);
 	R_pogo_adc = adc_get_val(R_EARBUD_POGO_ADC);
+
 	if(pogo_adc_to_mA(L_pogo_adc) >= EARPHONE_OVER_CURRENT_MA || pogo_adc_to_mA(R_pogo_adc) >= EARPHONE_OVER_CURRENT_MA) {//过流保护检测
-		GPIO_Write_Low(charge_5V_boost_pin);
-		GPIO_Init(pattern_TX_pin, Output);
-		GPIO_Write_Low(pattern_TX_pin);
-		GPIO_InPutOutPut_Disable(pattern_RX_pin);
+		overcur_cnt++;
+	}else overcur_cnt = 0;
+	
+	if(overcur_cnt >= 3) {//过流保护处理
+		overcur_cnt = 0;
+		pogo_pin_output_contrl(APP_OUTPUT_TYPE_OUTPUTLOW);
 		GPIO_Write_Low(charge_enable_pin);
 		earphone_status_update(APP_EARPHONE_STATUS_OVER_CURRENT);
 		app_battery_status_update(APP_BATTERY_STATUS_ERROR);//设置电池处理错误状态
@@ -235,19 +411,26 @@ void EarphoneWakeUp(U8_T parm)
 {
 	printf("enter function->%s\r\n", __func__);
 
-	GPIO_Write_Low(charge_5V_boost_pin);
-	GPIO_Init(pattern_TX_pin, Output);
-	GPIO_Write_High(pattern_TX_pin);
-	GPIO_InPutOutPut_Disable(pattern_RX_pin);
+	pogo_pin_output_contrl(APP_OUTPUT_TYPE_REVDATA);
+	earphone_status_update(APP_EARPHONE_STATUS_COMM);
 }
 
 void app_deinit(void)
 {
+	//charging
+	GPIO_InPutOutPut_Disable(charge_status_pin);
+	GPIO_PullHighLow_DIS(charge_status_pin);
 	GPIO_Write_Low(charge_5V_boost_pin);
-	GPIO_Init(pattern_TX_pin, Output);
-	GPIO_Write_Low(pattern_TX_pin);
-	GPIO_InPutOutPut_Disable(pattern_RX_pin);
+	GPIO_InPutOutPut_Disable(charge_wired_iset_pin);
+	GPIO_InPutOutPut_Disable(charge_wireless_iset_pin);
+	GPIO_PullHighLow_DIS(charge_wireless_iset_pin);//烧录复用口要禁用内部上下拉，否则会带来待机功耗
+	GPIO_InPutOutPut_Disable(charge_enable_pin);
+	GPIO_PullHighLow_DIS(charge_enable_pin);//烧录复用口要禁用内部上下拉，否则会带来待机功耗
+	GPIO_Write_Low(NTC_detect_pin);
+	EXTI_trigger_CMD(DISABLE, EXI_PIN3, _EXIFT);//禁用拔出USB唤醒
+	EXTI_trigger_CMD(DISABLE, EXI_PIN0, _EXIFT);//禁用移开无线充电源唤醒
 
+	//adc
 	ADC12_ready_wait();
 	ADC12_Control(ADC12_STOP); //休眠前不停止ADC转换，这会造成唤醒后，MCU卡机
 	ADC12_CMD(DISABLE);
@@ -255,55 +438,78 @@ void app_deinit(void)
 	GPIO_InPutOutPut_Disable(chg_r_adc_pin);
 	GPIO_InPutOutPut_Disable(bat_adc_pin);
 	GPIO_InPutOutPut_Disable(ntc_adc_pin);
-	
+
+	//LED
 	GPIO_InPutOutPut_Disable(red_led_pin);
 	GPIO_InPutOutPut_Disable(blue_led_pin);
 	GPIO_InPutOutPut_Disable(green_led_pin);
-	GPIO_InPutOutPut_Disable(NTC_detect_pin);
-	GPIO_Write_Low(NTC_detect_pin);
+
+	//communicate
+	GPIO_Init(pattern_TX_pin, Output);
+	GPIO_Write_Low(pattern_TX_pin);
+	GPIO_InPutOutPut_Disable(pattern_RX_pin);
+	
+	GPIO_InPutOutPut_Disable(debug_RX_pin);
+	GPIO_InPutOutPut_Disable(debug_TX_pin);
+
+	GPIO_InPutOutPut_Disable(key_pin);//改善按下按键会增加功耗问题，合盖按键不唤醒
+	GPIO_PullHighLow_DIS(key_pin);
 }
 
 void app_recover(void)
 {
-	if(battery_status == APP_BATTERY_STATUS_NORMAL) {
-		if(hall_status == APP_HALL_STATUS_CLOSE_BOX) {
-			if(earphone_status == APP_EARPHONE_STATUS_CHARGING) {
-				GPIO_Write_High(charge_5V_boost_pin);
-				GPIO_Init(pattern_TX_pin, Output);
-				GPIO_Write_Low(pattern_TX_pin);
-				GPIO_InPutOutPut_Disable(pattern_RX_pin);
-			}
-		}
-	}
+	//communicate
+	UART1_CONFIG(115200);
+	Coret_DelayMs(20);//延时使NTC电压稳定
 
+	//charging
+	GPIO_Init(charge_status_pin, Intput);
+	GPIO_PullHigh_Init(charge_status_pin);
+	GPIO_Init(charge_enable_pin, Output);
+	if(app_charge_type_get() != APP_CHARGE_TYPE_DISCHARGE) 
+	{
+		GPIO_Write_High(charge_enable_pin);
+		GPIO_Write_High(NTC_detect_pin);
+		Coret_DelayMs(20);//延时使NTC电压稳定
+		ntc_status_update(ntc_status_measure(ntc_adc_to_mv(adc_get_val(NTC_ADC))));
+		charge_current_control(ntc_status_get(), app_charge_type_get());
+		app_start_100_millisecond_timer(APP_NTC_TIMER_ID);//重新开启NTC检测定时器
+	}
+	EXTI_trigger_CMD(ENABLE, EXI_PIN3, _EXIFT);//启用拔出USB唤醒
+	EXTI_trigger_CMD(ENABLE, EXI_PIN0, _EXIFT);//启用移开无线充电源唤醒
+
+	//adc
 	ADC12_ConversionChannel_Config(ADC12_ADCIN10, ADC12_CV_RepeatNum8, ADC12_AVGEN, 0);
 	ADC12_ConversionChannel_Config(ADC12_ADCIN4, ADC12_CV_RepeatNum8, ADC12_AVGEN, 1);
 	ADC12_ConversionChannel_Config(ADC12_ADCIN13, ADC12_CV_RepeatNum8, ADC12_AVGEN, 2);
 	ADC12_ConversionChannel_Config(ADC12_ADCIN11, ADC12_CV_RepeatNum8, ADC12_AVGEN, 3);
 	ADC12_CMD(ENABLE);
 	ADC12_ready_wait();
-	
+
+	//LED
 	EPT_IO_SET(EPT_IO_CHBX, IO_NUM_PB02);
 	GPIO_Init(blue_led_pin, Output);
-	GPIO_Init(green_led_pin, Output);
-	GPIO_Init(NTC_detect_pin, Output);
-	if(GPIO_Read_Status(charge_USB5V_detect_pin)) GPIO_Write_High(NTC_detect_pin);
-	else GPIO_Write_Low(NTC_detect_pin);
+	EPT_IO_SET(EPT_IO_CHAY, IO_NUM_PB03);
+
+	//communicate
+	GPIOA0_EXI_Init(EXI4); /* GPIOA0.04设置为输入模式，输出禁止 */ 
+	GPIO_PullLow_Init(key_pin);
 }
 
 void system_goto_deepsleep_mode(U8_T parm)
 {	
 	is_system_active = FALSE;
-	app_deinit();
 	app_status_indication_set(APP_STATUS_INDICATION_DSLEEP);
 	printf("system goto deepsleep\r\n");
 	printf("bye bye~~\r\n");
+	app_deinit();
 	PCLK_goto_deepsleep_mode();
 	Coret_DelayMs(100); //系统唤醒后，延时使其稳定
 	do {
 		app_recover();
+		Coret_DelayMs(20);//延时使初始化稳定
 		is_system_active = TRUE;
-		printf("\r\n\r\nsystem wakeup~~\r\n");
+		printf("\r\n\r\nsystem wakeup!!!\r\n");
 	}while(is_system_active == FALSE);
 }
 
@@ -380,18 +586,12 @@ S8_T box_open_close_handle_progress(void)
 			if(hall_status != pre_status) {
 				time_cnt = 0;
 				if(app_battery_status_get() == APP_BATTERY_STATUS_NTC_ERROR) {
-					GPIO_Write_Low(charge_5V_boost_pin);
-					GPIO_Init(pattern_TX_pin, Output);
-					GPIO_Write_Low(pattern_TX_pin);
-					GPIO_InPutOutPut_Disable(pattern_RX_pin);
+					pogo_pin_output_contrl(APP_OUTPUT_TYPE_OUTPUTLOW);
 					earphone_status_update(APP_EARPHONE_STATUS_WAIT_FOR_CHARFE);
 					printf("earphone charge NTC error!!!\r\n");
 				} else if(battery_power_get() > 0){
 					if(app_charge_type_get() == APP_CHARGE_TYPE_DISCHARGE) charging_case_battery_indication_handle();
-					GPIO_Write_High(charge_5V_boost_pin);
-					GPIO_Init(pattern_TX_pin, Output);
-					GPIO_Write_Low(pattern_TX_pin);
-					GPIO_InPutOutPut_Disable(pattern_RX_pin);
+					pogo_pin_output_contrl(APP_OUTPUT_TYPE_BOOST5V);
 					app_start_100_millisecond_timer(APP_EARPHONE_STATUS_CHECK_TIMER_ID);
 				}
 				EXI3_WakeUp_Disable(); //合盖，按键动作不唤醒
@@ -407,21 +607,19 @@ S8_T box_open_close_handle_progress(void)
 					switch(earphone_status_get())
 					{
 						case APP_EARPHONE_STATUS_CHARGING:
-							if(is_earphone_fully_charged())
-							{
-								GPIO_Write_Low(charge_5V_boost_pin);
-								GPIO_Init(pattern_TX_pin, Output);
-								GPIO_Write_Low(pattern_TX_pin);
-								GPIO_InPutOutPut_Disable(pattern_RX_pin);
+							if(is_earphone_fully_charged()) {
+								pogo_pin_output_contrl(APP_OUTPUT_TYPE_OUTPUTLOW);
 								earphone_status_update(APP_EARPHONE_STATUS_FULLCHARGE);
 								if(app_charge_type_get() == APP_CHARGE_TYPE_DISCHARGE) app_start_100_millisecond_timer(APP_DEEP_SLEEP_TIMER_ID);
-								app_status_indication_set(APP_STATUS_INDICATION_EARPHONE_FULL_CHARGE);
+								if(app_charge_type_get() == APP_CHARGE_TYPE_DISCHARGE) app_status_indication_set(APP_STATUS_INDICATION_EARPHONE_FULL_CHARGE);
+							}else {
+								if(app_status_indication_get() != APP_STATUS_INDICATION_CHARGING_FOR_EARPHONE)
+								{
+									if(app_charge_type_get() == APP_CHARGE_TYPE_DISCHARGE) app_status_indication_set(APP_STATUS_INDICATION_CHARGING_FOR_EARPHONE);
+								}
 							}
 							if(app_battery_status_get() == APP_BATTERY_STATUS_NTC_ERROR) {
-								GPIO_Write_Low(charge_5V_boost_pin);
-								GPIO_Init(pattern_TX_pin, Output);
-								GPIO_Write_Low(pattern_TX_pin);
-								GPIO_InPutOutPut_Disable(pattern_RX_pin);
+								pogo_pin_output_contrl(APP_OUTPUT_TYPE_OUTPUTLOW);
 								earphone_status_update(APP_EARPHONE_STATUS_WAIT_FOR_CHARFE);
 								printf("earphone charge NTC error!!!\r\n");
 							}
@@ -430,10 +628,7 @@ S8_T box_open_close_handle_progress(void)
 						case APP_EARPHONE_STATUS_WAIT_FOR_CHARFE:
 							if(app_battery_status_get() != APP_BATTERY_STATUS_NTC_ERROR)
 							{
-								GPIO_Write_High(charge_5V_boost_pin);
-								GPIO_Init(pattern_TX_pin, Output);
-								GPIO_Write_Low(pattern_TX_pin);
-								GPIO_InPutOutPut_Disable(pattern_RX_pin);
+								pogo_pin_output_contrl(APP_OUTPUT_TYPE_BOOST5V);
 								app_start_100_millisecond_timer(APP_EARPHONE_STATUS_CHECK_TIMER_ID);
 								printf("earphone charge exit NTC error status!!!");
 							}
@@ -463,18 +658,12 @@ S8_T box_open_close_handle_progress(void)
 			if(hall_status != pre_status) {
 				time_cnt = 0;
 				if(app_battery_status_get() == APP_BATTERY_STATUS_NTC_ERROR) {
-					GPIO_Write_Low(charge_5V_boost_pin);
-					GPIO_Init(pattern_TX_pin, Output);
-					GPIO_Write_Low(pattern_TX_pin);
-					GPIO_InPutOutPut_Disable(pattern_RX_pin);
-					earphone_status_update(APP_EARPHONE_STATUS_WAIT_FOR_CHARFE);
+					pogo_pin_output_contrl(APP_OUTPUT_TYPE_OUTPUTLOW);
+					earphone_status_update(APP_EARPHONE_STATUS_WAIT_FOR_COMM);
 					printf("earphone charge NTC error!!!\r\n");
 				} else if(battery_power_get() > 0){
 					if(app_charge_type_get() == APP_CHARGE_TYPE_DISCHARGE) charging_case_battery_indication_handle();
-					GPIO_Write_High(charge_5V_boost_pin);
-					GPIO_Init(pattern_TX_pin, Output);
-					GPIO_Write_Low(pattern_TX_pin);
-					GPIO_InPutOutPut_Disable(pattern_RX_pin);
+					pogo_pin_output_contrl(APP_OUTPUT_TYPE_BOOST5V);
 					app_start_100_millisecond_timer(APP_EARPHONE_WAKEUP_TIMER_ID);
 				}
 				EXI3_WakeUp_Enable(); //开盖，按键动作要唤醒
@@ -489,13 +678,10 @@ S8_T box_open_close_handle_progress(void)
 					time_cnt = 0;
 					switch(earphone_status_get())
 					{
-						case APP_EARPHONE_STATUS_WAIT_FOR_CHARFE:
+						case APP_EARPHONE_STATUS_WAIT_FOR_COMM:
 							if(app_battery_status_get() != APP_BATTERY_STATUS_NTC_ERROR)
 							{
-								GPIO_Write_High(charge_5V_boost_pin);
-								GPIO_Init(pattern_TX_pin, Output);
-								GPIO_Write_Low(pattern_TX_pin);
-								GPIO_InPutOutPut_Disable(pattern_RX_pin);
+								pogo_pin_output_contrl(APP_OUTPUT_TYPE_BOOST5V);
 								app_start_100_millisecond_timer(APP_EARPHONE_WAKEUP_TIMER_ID);
 								printf("earphone charge exit NTC error status!!!");
 							}
@@ -505,18 +691,15 @@ S8_T box_open_close_handle_progress(void)
 							app_status_indication_set(APP_STATUS_INDICATION_EARPHONE_OVER_CURRENT);
 							break;
 						
-						case APP_EARPHONE_STATUS_CHARGING:
-						case APP_EARPHONE_STATUS_NO_IN_BOX:							
-						case APP_EARPHONE_STATUS_FULLCHARGE:					
-						default:
+						case APP_EARPHONE_STATUS_COMM:
 							if(app_battery_status_get() == APP_BATTERY_STATUS_NTC_ERROR) {
-								GPIO_Write_Low(charge_5V_boost_pin);
-								GPIO_Init(pattern_TX_pin, Output);
-								GPIO_Write_Low(pattern_TX_pin);
-								GPIO_InPutOutPut_Disable(pattern_RX_pin);
-								earphone_status_update(APP_EARPHONE_STATUS_WAIT_FOR_CHARFE);
+								pogo_pin_output_contrl(APP_OUTPUT_TYPE_OUTPUTLOW);
+								earphone_status_update(APP_EARPHONE_STATUS_WAIT_FOR_COMM);
 								printf("earphone charge NTC error!!!\r\n");
 							}
+							break;
+
+						default:
 							break;
 					}
 				}
@@ -557,10 +740,7 @@ S8_T app_battery_handle_process_normal(enum APP_BATTERY_STATUS_T status)
 			if(battery_status != pre_status) {
 				time_cnt = 0;
 				GPIO_Write_Low(charge_enable_pin);
-				GPIO_Write_Low(charge_5V_boost_pin);
-				GPIO_Init(pattern_TX_pin, Output);
-				GPIO_Write_Low(pattern_TX_pin);
-				GPIO_InPutOutPut_Disable(pattern_RX_pin);
+				pogo_pin_output_contrl(APP_OUTPUT_TYPE_OUTPUTLOW);
 				pre_status = battery_status;
 			} else{
 				time_cnt++;
@@ -575,6 +755,7 @@ S8_T app_battery_handle_process_normal(enum APP_BATTERY_STATUS_T status)
 		default:
 			GPIO_Write_Low(charge_enable_pin);
 			GPIO_Write_Low(NTC_detect_pin);
+			app_stop_100_millisecond_timer(APP_NTC_TIMER_ID);
 			battery_status = status;
 			pre_status = APP_BATTERY_STATUS_INVALID;
 			break;
@@ -585,9 +766,8 @@ S8_T app_battery_handle_process_normal(enum APP_BATTERY_STATUS_T status)
 S8_T app_battery_handle_process_charge(enum APP_BATTERY_STATUS_T status)
 {
 	static enum APP_BATTERY_STATUS_T pre_status = APP_BATTERY_STATUS_INVALID;
-	static U16_T time_cnt = 0, ntc_time_cnt = 0;;
-	static U8_T full_charge_cnt = 0, ntc_trigger_cnt = 0;
-	U32_T ntc_mv = 0;
+	static U16_T time_cnt = 0;
+	static U8_T full_charge_cnt = 0;
 	
 	//printf("%s: %d\r\n",__func__, battery_status);
 
@@ -596,17 +776,17 @@ S8_T app_battery_handle_process_charge(enum APP_BATTERY_STATUS_T status)
 		case APP_BATTERY_STATUS_CHARGING:
 			if(battery_status != pre_status) {
 				time_cnt = full_charge_cnt = 0;
-				GPIO_Write_High(charge_enable_pin);
-				Coret_DelayMs(50);
-				if(!GPIO_Read_Status(charge_status_pin)) {
-					GPIO_Write_Low(charge_enable_pin);
-					app_status_indication_set(APP_STATUS_INDICATION_FULLCHARGE);
-					printf("fully charge!!!\r\n");
-				} else{
-					app_status_indication_set(APP_STATUS_INDICATION_CHARGING);
-					printf("charging....\r\n");
-				}
 				pre_status = battery_status;
+				if(ntc_status_get() == APP_NTC_STATUS_STOPCHG)
+				{
+					printf("NTC error!!!: %d\r\n", ntc_status_get());
+					battery_status = APP_BATTERY_STATUS_NTC_ERROR;
+					break;
+				}
+				GPIO_Write_High(charge_enable_pin);
+				charge_current_control(ntc_status_get(), app_charge_type_get());
+				app_status_indication_set(APP_STATUS_INDICATION_CHARGING);
+				printf("charging....\r\n");
 			} else{
 				time_cnt++;
 				if(time_cnt >= 400)
@@ -623,16 +803,28 @@ S8_T app_battery_handle_process_charge(enum APP_BATTERY_STATUS_T status)
 							printf("fully charge!!!\r\n");
 						}
 					} else{
+						//合盖状态耳机和仓满充要进休眠
+						if(earphone_status_get() == APP_EARPHONE_STATUS_FULLCHARGE || earphone_status_get() == APP_EARPHONE_STATUS_NO_IN_BOX)
+						{
+							if(app_get_100_millisecond_timer_status(APP_NTC_TIMER_ID) == TRUE)
+								app_stop_100_millisecond_timer(APP_NTC_TIMER_ID);//关闭NTC检测定时器
+							if(app_get_100_millisecond_timer_status(APP_DEEP_SLEEP_TIMER_ID) == FALSE)
+								app_start_100_millisecond_timer(APP_DEEP_SLEEP_TIMER_ID);
+						}
+						//仓电量低于4.1V，回充
 						if(APP_BATTERY_RECHARGE_MV >= battery_adc_to_mv(adc_get_val(BATTERY_ADC)))
 						{
 							GPIO_Write_High(charge_enable_pin);
+							if(app_get_100_millisecond_timer_status(APP_NTC_TIMER_ID) == FALSE)
+								app_start_100_millisecond_timer(APP_NTC_TIMER_ID);//重新开启NTC检测定时器
 							app_status_indication_set(APP_STATUS_INDICATION_CHARGING);
+							app_stop_100_millisecond_timer(APP_DEEP_SLEEP_TIMER_ID);
 							printf("start recharge....\r\n");
 						}
 					}
 				}	
 			}
-
+			/*
 			ntc_time_cnt++;
 			if(ntc_time_cnt >= 500)
 			{
@@ -649,16 +841,24 @@ S8_T app_battery_handle_process_charge(enum APP_BATTERY_STATUS_T status)
 					battery_status = APP_BATTERY_STATUS_NTC_ERROR;
 				}
 			}
+			*/
+			if(FALSE == app_get_100_millisecond_timer_status(APP_NTC_TIMER_ID))//等待NTC状态发送变化
+			{
+				charge_current_control(ntc_status_get(), app_charge_type_get());
+				if(ntc_status_get() == APP_NTC_STATUS_STOPCHG)
+				{
+					printf("NTC error!!!: %d\r\n", ntc_status_get());
+					battery_status = APP_BATTERY_STATUS_NTC_ERROR;
+				}
+				app_start_100_millisecond_timer(APP_NTC_TIMER_ID);//重新开启NTC检测定时器
+			}
 			break;
 
 		case APP_BATTERY_STATUS_NTC_ERROR:
 			if(battery_status != pre_status) {
 				time_cnt = 0;
 				GPIO_Write_Low(charge_enable_pin);
-				GPIO_Write_Low(charge_5V_boost_pin);
-				GPIO_Init(pattern_TX_pin, Output);
-				GPIO_Write_Low(pattern_TX_pin);
-				GPIO_InPutOutPut_Disable(pattern_RX_pin);
+				pogo_pin_output_contrl(APP_OUTPUT_TYPE_OUTPUTLOW);
 				app_status_indication_set(APP_STATUS_INDICATION_NTC_ERROR);
 				pre_status = battery_status;
 			} else{
@@ -670,6 +870,7 @@ S8_T app_battery_handle_process_charge(enum APP_BATTERY_STATUS_T status)
 				}	
 			}
 
+			/*
 			ntc_time_cnt++;
 			if(ntc_time_cnt >= 500)
 			{
@@ -686,16 +887,24 @@ S8_T app_battery_handle_process_charge(enum APP_BATTERY_STATUS_T status)
 					battery_status = APP_BATTERY_STATUS_CHARGING;
 				}
 			}
+			*/
+			if(FALSE == app_get_100_millisecond_timer_status(APP_NTC_TIMER_ID))//等待NTC状态发送变化
+			{
+				charge_current_control(ntc_status_get(), app_charge_type_get());
+				if(ntc_status_get() != APP_NTC_STATUS_STOPCHG)
+				{
+					printf("NTC error-->recover charge!!!: %d\r\n", ntc_status_get());
+					battery_status = APP_BATTERY_STATUS_CHARGING;
+				}
+				app_start_100_millisecond_timer(APP_NTC_TIMER_ID);//重新开启NTC检测定时器
+			}
 			break;
 
 		case APP_BATTERY_STATUS_ERROR:
 			if(battery_status != pre_status) {
 				time_cnt = 0;
 				GPIO_Write_Low(charge_enable_pin);
-				GPIO_Write_Low(charge_5V_boost_pin);
-				GPIO_Init(pattern_TX_pin, Output);
-				GPIO_Write_Low(pattern_TX_pin);
-				GPIO_InPutOutPut_Disable(pattern_RX_pin);
+				pogo_pin_output_contrl(APP_OUTPUT_TYPE_OUTPUTLOW);
 				pre_status = battery_status;
 			} else{
 				time_cnt++;
@@ -709,6 +918,8 @@ S8_T app_battery_handle_process_charge(enum APP_BATTERY_STATUS_T status)
 			
 		default:
 			GPIO_Write_High(NTC_detect_pin);
+			ntc_status_update(ntc_status_measure(ntc_adc_to_mv(adc_get_val(NTC_ADC))));
+			app_start_100_millisecond_timer(APP_NTC_TIMER_ID);
 			battery_status = status;
 			pre_status = APP_BATTERY_STATUS_INVALID;
 			break;
@@ -744,8 +955,12 @@ void EXI2to3IntHandler(void)
 	else if ((SYSCON->EXIRS&EXI_PIN3)==EXI_PIN3) 
 	{
 		SYSCON->EXICR = EXI_PIN3;
-		if(GPIO_Read_Status(charge_USB5V_detect_pin)) ;
-		else app_status_indication_set(APP_STATUS_INDICATION_PLUGOUT);
+		if(GPIO_Read_Status(charge_USB5V_detect_pin)) charge_current_control(ntc_status_get(), app_charge_type_get());
+		else 
+		{
+			charge_current_control(ntc_status_get(), app_charge_type_get());//有线充转无线充时，充电电流要转换
+			if(app_charge_type_get() == APP_CHARGE_TYPE_DISCHARGE) app_status_indication_set(APP_STATUS_INDICATION_PLUGOUT);
+		}
 	}
 }
 
@@ -755,8 +970,12 @@ void EXI0IntHandler(void)
 	if ((SYSCON->EXIRS&EXI_PIN0)==EXI_PIN0) 
 	{
 		SYSCON->EXICR = EXI_PIN0;
-		if(GPIO_Read_Status(charge_wireless5V_dectect_pin)) ;
- 		else app_status_indication_set(APP_STATUS_INDICATION_PLUGOUT);
+		if(GPIO_Read_Status(charge_wireless5V_dectect_pin)) charge_current_control(ntc_status_get(), app_charge_type_get());
+ 		else 
+		{
+			charge_current_control(ntc_status_get(), app_charge_type_get());
+			if(app_charge_type_get() == APP_CHARGE_TYPE_DISCHARGE) app_status_indication_set(APP_STATUS_INDICATION_PLUGOUT);
+		}
 	}
 }
 

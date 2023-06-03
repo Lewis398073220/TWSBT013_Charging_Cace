@@ -114,9 +114,7 @@ S8_T IO_port_analog_uart_send_data(const char *data)
 	U8_T i, j;
 
 	//发码前先拉高RX电平
-	UART_IO_Init(IO_UART2, 2);
-	GPIO_Init(pattern_RX_pin, Output);
-	GPIO_Write_High(pattern_RX_pin);
+	pogo_pin_output_contrl(APP_OUTPUT_TYPE_SENDDATA);
 
 	//CK_CPU_DisAllNormalIrq();
 	for(i = 0; i < data_length; i++)
@@ -140,7 +138,7 @@ S8_T IO_port_analog_uart_send_data(const char *data)
 	}
 
 	//发码后恢复RX输入功能
-	UART_IO_Init(IO_UART2, 2); 
+	pogo_pin_output_contrl(APP_OUTPUT_TYPE_REVDATA);
 	//CK_CPU_EnAllNormalIrq();
 	return 0;
 }

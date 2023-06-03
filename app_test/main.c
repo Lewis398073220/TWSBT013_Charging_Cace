@@ -10,10 +10,16 @@ extern void APT32F102_init(void);
 int main(void)
 {	
 	APT32F102_init();
-	printf("\r\n\r\nTWSBT013-charging case: V0.0.4\r\n");
+	printf("\r\n\r\nTWSBT013-charging case: V0.0.6\r\n");
 	Coret_DelayMs(20); /* 延时使系统稳定 */
 	
 	ReduceSYSCLKto5556KHZ();
+
+	/* 待机电流Debug
+	Coret_DelayMs(8000);
+	system_goto_deepsleep_mode(0);
+	*/
+	
 	battery_power_update(battery_level_calculate(battery_adc_to_mv(adc_get_val(BATTERY_ADC))));
 	app_start_100_millisecond_timer(APP_BATTERY_TIMER_ID);
 	app_start_100_millisecond_timer(APP_OVERCURRENT_TIMER_ID);//常开过流保护检测定时器

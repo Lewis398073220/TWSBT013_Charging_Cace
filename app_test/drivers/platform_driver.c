@@ -270,38 +270,41 @@ void adc_hardware_setup(void)
   */
 void charging_hardware_setup(void)
 {
-	/* 5V升压引脚初始化 */
+	//5V升压引脚初始化
 	GPIO_Init(charge_5V_boost_pin, Output); /* 输出模式，输入禁止 */
 	GPIO_Write_Low(charge_5V_boost_pin);
 	
-	/* USB5V插入检测引脚初始化 */
-	GPIO_IntGroup_Set(GPIOA, 3, Selete_EXI_PIN3); /* 外部中断组1选择GPIOA0.01作为中断源 */								
-	GPIOA0_EXI_Init(EXI3); /* GPIOA0.01设置为输入模式，输出禁止 */ 
+	//USB5V插入检测引脚初始化
+	GPIO_IntGroup_Set(GPIOA, 3, Selete_EXI_PIN3); //外部中断组1选择GPIOA0.01作为中断源								
+	GPIOA0_EXI_Init(EXI3); //GPIOA0.01设置为输入模式，输出禁止
 	GPIO_PullHighLow_DIS(charge_USB5V_detect_pin);
-	EXTI_trigger_CMD(ENABLE, EXI_PIN3, _EXIRT); /* EXI1上升沿触发中断 */ 
-	EXTI_trigger_CMD(ENABLE, EXI_PIN3, _EXIFT); /* EXI1下降沿触发中断 */ 
-	EXTI_interrupt_CMD(ENABLE, EXI_PIN3); /* 打开EXI1中断源 */
-	GPIO_EXI_EN(GPIOA0, EXI3); /* 使能EXI1外部中断 */
-	EXI2_Int_Enable(); /* 使能NVIC对EXI1中断向量的响应 */
+	EXTI_trigger_CMD(ENABLE, EXI_PIN3, _EXIRT); //EXI1上升沿触发中断
+	EXTI_trigger_CMD(ENABLE, EXI_PIN3, _EXIFT); //EXI1下降沿触发中断
+	EXTI_interrupt_CMD(ENABLE, EXI_PIN3); //打开EXI1中断源
+	GPIO_EXI_EN(GPIOA0, EXI3); //使能EXI1外部中断
+	EXI2_Int_Enable(); //使能NVIC对EXI1中断向量的响应
 	EXI2_WakeUp_Enable();
 	
-	/* 充电状态引脚初始化 */
+	//充电状态引脚初始化
 	GPIO_Init(charge_status_pin, Intput);
 	GPIO_PullHigh_Init(charge_status_pin);
 	
-	/* 充电使能引脚初始化 */
+	//充电使能引脚初始化
 	GPIO_Init(charge_enable_pin, Output); /* 输出模式，输入禁止 */
 	GPIO_Write_Low(charge_enable_pin);
+	GPIO_PullHighLow_DIS(charge_enable_pin);//烧录复用口要禁用内部上下拉，否则会带来待机功耗
 
-	/* ntc det引脚初始化 */
+	//ntc det引脚初始化
 	GPIO_Init(NTC_detect_pin, Output); /* 输出模式，输入禁止 */
 	GPIO_Write_Low(NTC_detect_pin);
 
 	//充电分段电流引脚初始化
 	GPIO_Init(charge_wireless_iset_pin, Output); /* 输出模式，输入禁止 */
+	GPIO_PullHighLow_DIS(charge_wireless_iset_pin);//烧录复用口要禁用内部上下拉，否则会带来待机功耗
 	GPIO_Write_Low(charge_wireless_iset_pin);
 
 	GPIO_InPutOutPut_Disable(charge_wired_iset_pin);
+	GPIO_PullHighLow_DIS(charge_wired_iset_pin);
 	//GPIO_Init(charge_wired_iset_pin, Output); /* 输出模式，输入禁止 */
 	//GPIO_Write_Low(charge_wired_iset_pin);
 
@@ -343,9 +346,6 @@ void communicate_hardware_setup(U32_T BaudRate)
 	EXI1_Int_Enable(); /* 使能NVIC对EXI1中断向量的响应 */
 	EXI1_WakeUp_Enable();
 	
-	//GPIO_Init(pattern_en_pin, Output); /* 输出模式，输入禁止 */
-	//GPIO_Write_Low(pattern_en_pin);
-	
 	/* 按键引脚初始化 */
 	GPIO_IntGroup_Set(GPIOA, 4, Selete_EXI_PIN4); /* 外部中断组4选择GPIOA0.04作为中断源 */								
 	GPIOA0_EXI_Init(EXI4); /* GPIOA0.04设置为输入模式，输出禁止 */ 
@@ -363,12 +363,9 @@ void communicate_hardware_setup(U32_T BaudRate)
 	GPIO_Write_High(pattern_TX_pin);	
 	GPIO_Init(pattern_RX_pin, Output);
 	GPIO_Write_High(pattern_RX_pin);
-	
 	#else
 	UART2_DeInit();                                                 //clear all UART Register
     UART_IO_Init(IO_UART2, 2);                                    	//use PB0.5->RXD2, PB0.4->TXD2
-	//GPIO_Init(pattern_RX_pin, Output);
-	//GPIO_Write_High(pattern_RX_pin);
 	UARTInitRxIntEn(UART2, BaudDiv, UART_PAR_NONE);	                    //baudrate=sysclock/46=115200
 	UART2_Int_Enable();
 	#endif
@@ -409,26 +406,3 @@ void EXI4to8IntHandler(void)
 
 }
 
-/**
-  *@函数功能：与电源控制相关的引脚的初始化
-  *@函数形参：void
-  *@函数返回值：void
-  *@函数说明：
-    1.GPIOA0.07--LDO_MCU_PWR_EN
-	2.GPIOB0.02--LDO_PWR_3V3_EN
-	3.GPIOA0.06--SW_LDO_PWR_EN
-  */
-void Power_PinInit(void)
-{
-	/* 开机检测引脚初始化 */
-	GPIO_Init(GPIOA0, 6, Intput); 
-	GPIO_PullHighLow_DIS(GPIOA0, 6);
-	
-	/* LDO_MCU_PWR_EN引脚初始化 */
-	GPIO_Init(GPIOA0, 7, Output);
-	GPIO_Write_Low(GPIOA0, 7); /* 默认拉低LDO_MCU_PWR_EN引脚 */
-	
-	/* LDO_PWR_3V3_EN引脚初始化 */
-	GPIO_Init(GPIOB0, 2, Output);
-	GPIO_Write_Low(GPIOB0, 2); /* 默认拉低LDO_PWR_3V3_EN引脚 */
-}

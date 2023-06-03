@@ -33,6 +33,8 @@ extern volatile U32_T SYSCLK;
 #define bat_adc_pin			              GPIOA0, 9
 #define ntc_adc_pin                       GPIOA0, 10
 
+#define debug_RX_pin			          GPIOA0, 13
+#define debug_TX_pin                      GPIOB0, 0
 
 void LPT_Init(void);
 void led_hardware_setup(void);

@@ -105,16 +105,6 @@ S8_T app_status_handle_process(void)
 			if(cur_status != pre_status)
 			{
 				time_cnt = 0;
-				app_green_led_turn_solid();
-			} else{
-				;
-			}
-			pre_status = cur_status;
-			*/
-			cur_status = app_status;
-			if(cur_status != pre_status)
-			{
-				time_cnt = 0;
 				app_green_led_pwm_contrl(2000, TRUE);
 			} else{
 				time_cnt++;
@@ -124,6 +114,8 @@ S8_T app_status_handle_process(void)
 				}
 			}
 			pre_status = cur_status;
+			*/
+			pre_status = app_status;
 			break;
 
 		case APP_STATUS_INDICATION_PLUGOUT:
